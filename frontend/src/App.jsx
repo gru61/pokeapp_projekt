@@ -1,27 +1,48 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Pokedex from "./pages/Pokedex";
-import OwnedPokemonDetails from "./pages/OwnedPokemonDetails.jsx";
-import SpeciesDetails from "./pages/SpeciesDetails";
-import Boxen from "./pages/Boxen";
-import Gefangen from "./pages/Gefangen";
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Pokedex from './pages/Pokedex';
+import OwnedPokemon from './pages/OwnedPokemon';
+import BoxView from './pages/BoxView';
+import './App.css';
+
 
 function App() {
-    return (
-        <BrowserRouter>
-            <Navbar />
-            <div className="container">
-                <Routes>
-                    <Route path="/" element={<Pokedex />} />
-                    <Route path="/details/:id" element={<OwnedPokemonDetails />} />
-                    <Route path="/species/:id" element={<SpeciesDetails />} />
-                    <Route path="/boxen" element={<Boxen />} />
-                    <Route path="/gefangen" element={<Gefangen />} />
-                </Routes>
+
+  return (
+    <Router>
+      <div className="app">
+        <main className={"main-content"}>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/pokedex" element={<Pokedex />} />
+                <Route path="/owned" element={<OwnedPokemon />} />
+                <Route path="/box-view" element={<BoxView />} />
+            </Routes>
+        </main>
+      </div>
+    </Router>
+  );
+}
+
+function Home() {
+  return (
+    <div className="home">
+        <div className="menu-cards">
+            <div className="menu-card" onClick={() => window.location.href = "/pokedex"}>
+                <h2>Pokédex</h2>
+                <p>Alle 151 OG's</p>
             </div>
-        </BrowserRouter>
-    );
+            <div className="menu-card" onClick={() => window.location.href = "/owned"}>
+                <h2>Pokémon in Besitz</h2>
+                <p>Deine OG's</p>
+            </div>
+            <div className="menu-card" onClick={() => window.location.href = "/box-view"}>
+                <h2>Box View</h2>
+                <p>Die Boxen</p>
+            </div>
+        </div>
+    </div>
+  );
 }
 
 export default App;

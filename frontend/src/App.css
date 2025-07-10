@@ -1,8 +1,46 @@
-.container {
-  padding: 1rem;
+.app {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.page-title {
-  color: var(--color-text);
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  color: #ddd;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.home {
+  max-width: 800px;
+  margin: 0 auto;
 }
