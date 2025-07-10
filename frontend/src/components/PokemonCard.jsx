@@ -1,29 +1,19 @@
-import "./PokemonCard.css";
 import {useNavigate} from "react-router-dom";
+import {getSpriteUrl} from "../utils/spriteUtils";
 
-function PokemonCard({ name, id }) {
+export default function PokemonCard({species, owned = false}) {
     const navigate = useNavigate();
-    const paddedId = id.toString().padStart(3, "0");
-    const spriteUrl = `/sprites/${paddedId}.png`;
-
 
     const handleClick = () => {
-        navigate(`/species/${id}`);
+        navigate(`/pokedex/${species.pokedexId}`);
     };
 
     return (
-        <div className="pokemon-card" onClick={handleClick}>
-            <img
-                src={spriteUrl}
-                alt={name}
-                className="pokemon-image"
-                onError={(e) => {
-                    e.target.src = "/sprites/placeholder.png"; // fallback image
-                }}
-            />
-            <h3 className="pokemon-name">{name}</h3>
+        <div className={"pokemon-card"} onClick={handleClick}>
+            <span className={"card-id"}>#{species.pokedexId}</span>
+            <img src={getSpriteUrl(species.pokedexId)} alt={species.name}/>
+            <h3>{species.name}</h3>
+            {owned && <span className={"owned-badge"}>In Besitz</span>}
         </div>
     );
 }
-
-export default PokemonCard;
