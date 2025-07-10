@@ -1,0 +1,8 @@
+.container {
+  padding: 1rem;
+  min-height: 100vh;
+}
+
+.page-title {
+  color: var(--color-text);
+}

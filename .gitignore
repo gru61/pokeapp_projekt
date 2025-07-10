@@ -1,0 +1,29 @@
+# IDE - Root .idea behalten, andere ignorieren
+backend/.idea/
+frontend/.idea/
+!.idea/
+*.iml
+
+# Logs
+logs/
+*.log
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Backend
+backend/target/
+backend/logs/
+backend/.env
+
+# Misc
+.DS_Store
+*.class
+*.jar
+*.war
