@@ -46,7 +46,7 @@ public class UpdateOwnedDTO {
     private Integer level;
 
     /**
-     * Die Edition, in der sich das Pokemon sich befindet
+     * Die Edition, in der sich das Pokemon befindet
      */
 //    @NotNull(message = "Edition darf nicht leer sein")
     private Edition edition;

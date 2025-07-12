@@ -52,8 +52,8 @@ public class PokemonSpecies {
 
 
     /**
-     * Momentan keine verwendung da die Arten durch die Klasse {@link PokemonSpeciesDataLoader} per SQL geladen werden.
-     * Jedoch könnte der Konstruktor in verwendung kommen, wenn man Tests macht oder als Admin neue Arten einpflegt.
+     * Momentan keine Verwendung da die Arten durch die Klasse {@link PokemonSpeciesDataLoader} per SQL geladen werden.
+     * Jedoch könnte der Konstruktor in Verwendung kommen, wenn man Tests macht oder als Admin neue Arten einpflegt.
      * @param pokedexId Die ID im nationalen Pokedex
      * @param name Der Name der Pokemon-Art
      * @param type1 Der primäre Typ, muss Feld

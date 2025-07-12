@@ -19,7 +19,7 @@ import java.util.List;
 
 
 /**
- * Service zu Verwaltung von gefangenen Pokemon.
+ * Service zur Verwaltung von gefangenen Pokemon.
  * Enthält Logik zum Hinzufügen, Bearbeiten und Validieren
  */
 @Service
@@ -114,7 +114,7 @@ public class OwnedPokemonService {
 
     /**
      * Aktualisiert ein gefangenes Pokemon
-     * @param id Die ID des Pokemons
+     * @param id Die ID des Pokemon's
      * @param request Die neuen Daten
      * @return Das aktualisierte Pokemon
      */

@@ -33,8 +33,8 @@ public class BoxService {
 
     /**
      * Gibt eine Box anhand dessen Namens zurück.
-     * @param name Den Namen der Box (TEAM / BOX1....)
-     * @param edition Den Standort der BOX
+     * @param name Den Namen der Box (TEAM / BOX1)
+     * @param edition Der Standort der BOX
      * @return Die gefundene Box
      * @throws NotFoundException Wenn die Box nicht gefunden wird
      */
@@ -45,9 +45,9 @@ public class BoxService {
     }
 
     /**
-     * Prüft, ob die box voll ist.
+     * Prüft, ob die Box voll ist.
      * @param name Der Name der Box
-     * @param edition Den Standort der BOX
+     * @param edition Der Standort der BOX
      * @return true, wenn die BOX voll ist
      */
     public boolean isFull(BoxName name, Edition edition) {
@@ -68,7 +68,7 @@ public class BoxService {
      * @param pokemonId Die ID des zu verschiebenden Pokemon
      * @param sourceEdition Die aktuelle Edition
      * @param targetEdition Die Ziel-Edition
-     * @throws SameBoxException Wenn Quell und Ziel Box identisch ist
+     * @throws SameBoxException Wenn Quell und Ziel Box identisch sind
      * @throws NotFoundException Wenn das gefangene Pokemon nicht gefunden wurde
      * @throws IllegalStateException Wenn dsa Pokemon nicht in der Quell-Box vorhanden ist
      * @throws BoxFullException Wenn die Ziel-Box voll ist
@@ -93,15 +93,15 @@ public class BoxService {
         //Ziel-Box laden
         Box target = getBoxByNameAndEdition(targetBox, targetEdition);
 
-        //Validierung: Prüft ob der Ziel-Box voll ist
+        //Validierung: Prüft, ob die Ziel-Box voll ist
         if (isFull(targetBox, targetEdition)) {
             throw new BoxFullException("Die Ziel Box " + targetBox + " ist schon voll");
         }
 
-        //Speichert die verschiebung
+        //Speichert die Verschiebung
         pokemon.setBox(target);
         pokemon.setEdition(targetEdition);
-        logger.info("Pokemon {} erfolgreich von {} aus der Edition {} nach {} Edition {}verschoben",
+        logger.info("Pokemon {} erfolgreich von {} aus der Edition {} nach {} Edition {} verschoben",
                 pokemonId, sourceBox, sourceEdition, targetBox, targetEdition);
         ownedRepo.save(pokemon);
     }

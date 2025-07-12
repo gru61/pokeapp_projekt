@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Collections;
 
 /**
-* Diese Klasse soll als die Boxen und das Team repräsentieren, in denen die gefangenen Pokemon gespeichert werden.
+* Diese Klasse soll die Boxen und das Team repräsentieren, in denen die gefangenen Pokemon gespeichert werden.
 * Enthält zusätzlich die Logik zur Validierung der Kapazitäten der einzelnen Boxen und des Teams
 */
 

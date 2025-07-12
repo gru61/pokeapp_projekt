@@ -1,0 +1,99 @@
+/* ---------- Global Styles ---------- */
+body {
+    background: #162447;       /* Dunkelblau */
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #f8f8f8;            /* Helle Schrift für Lesbarkeit */
+}
+
+/* ---------- Navbar (MainNavbar) ---------- */
+.mainnavbar-root {
+    display: flex;
+    gap: 2rem;
+    padding: 1.5rem;
+    background: #1f4068;      /* Etwas helleres Dunkelblau */
+    border-bottom: 1px solid #283655;
+}
+
+.mainnavbar-link {
+    text-decoration: none;
+    color: #f8f8f8;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.1s;
+    padding-bottom: 2px;
+}
+
+.mainnavbar-link.active,
+.mainnavbar-link:hover {
+    color: #ffb400;           /* Gelb für aktiven Link/Hover */
+    font-weight: bold;
+    border-bottom: 2px solid #ffb400;
+}
+
+/* ---------- HomePage Cards ---------- */
+.homepage-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 75vh;
+    justify-content: center;
+}
+
+.homepage-title {
+    margin-bottom: 60px;
+    color: #f8f8f8;
+}
+
+.homepage-cards {
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.homepage-card {
+    width: 260px;
+    height: 260px;
+    background: #fff;
+    color: #162447;
+    border-radius: 20px;
+    box-shadow: 0 6px 32px #101b38aa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    transition: transform 0.1s, box-shadow 0.1s;
+    border: none;
+}
+.homepage-card:hover, .homepage-card:focus {
+    transform: scale(1.03);
+    box-shadow: 0 12px 32px #101b38cc;
+    outline: none;
+}
+.homepage-card h2 {
+    margin-bottom: 15px;
+}
+.homepage-card span {
+    color: #888;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* ---------- Optional: Scrollbar und Fokus ---------- */
+::-webkit-scrollbar {
+    width: 8px;
+    background: #1f4068;
+}
+::-webkit-scrollbar-thumb {
+    background: #283655;
+    border-radius: 10px;
+}
+
+/* Tab-Fokus für bessere Accessibility */
+.homepage-card:focus {
+    box-shadow: 0 0 0 3px #ffb40088;
+}

@@ -9,8 +9,8 @@ import pokedex.model.OwnedPokemon;
 
 
 /**
- * DTO zu Darstellung eines gefangenen Pokemon im Frontend.
- * Enthält alle wichtigen Infos zur Anzeige
+ * DTO dient der Darstellung gefangenen Pokemon's im Frontend.
+ * Enthält alle wichtigen Informationen zur Anzeige
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
