@@ -13,12 +13,12 @@ import java.util.Objects;
 
 /**
  * Repräsentiert ein gefangenes Pokemon mit den Attributen:
- * - ID, welche von der Datenbank gegeben wird und für klare identifizierung dient
+ * - ID, welche von der Datenbank gegeben wird und für klare Identifizierung dient
  * - Die Attribute von der Pokemon-Art
- * - Nickname, für eine Optionale vergabe vom User
+ * - Nickname, für eine optionale Vergabe vom User
  * - Level,
  * - Box,
- * - Edition, sind jeweils Mussfelder, um das gefangene Pokemon klar zu dokumentieren und eine klare Übersicht zu bahlten.
+ * - Edition, sind jeweils Pflichtfelder, um das gefangene Pokemon klar zu dokumentieren und eine klare Übersicht zu behalten.
  */
 @Data
 @NoArgsConstructor

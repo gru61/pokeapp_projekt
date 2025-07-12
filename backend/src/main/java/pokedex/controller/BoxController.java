@@ -11,6 +11,8 @@ import pokedex.model.BoxName;
 import pokedex.model.Edition;
 import pokedex.service.BoxService;
 
+import java.util.List;
+
 
 /**
  * Controller zur Verwaltung von Boxen über die REST-API.
@@ -62,7 +64,7 @@ public class BoxController {
      * @param targetBox Der Name der Zeil-Box
      * @param pokemonId Die ID des zu verschiebenden Pokemon
      * @param sourceEdition Die aktuelle Edition
-     * @param targetEdition Die ziel Edition
+     * @param targetEdition Die Ziel-Edition
      * @return Eine Erfolgsmeldung
      */
     @Operation(summary = "Verschiebt ein Pokemon von Box... zu Box...", description = "Zentraler Endpunkt für drag & drop")
@@ -80,4 +82,27 @@ public class BoxController {
         boxService.movePokemon(pokemonId, sourceBox, sourceEdition, targetBox, targetEdition);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Gibt alle verfügbaren Box-Namen zurück
+     * @return Liste aller Box-Namen
+     */
+    @Operation(summary = "Lädt alle verfügbaren Box-Namen", description = "Gibt eine Liste aller Box-Namen zurück")
+    @ApiResponse(responseCode = "200", description = "Box-Namen erfolgreich geladen")
+    @GetMapping("/names")
+    public ResponseEntity<List<String>> getAllBoxNames() {
+        return ResponseEntity.ok(BoxName.getAllBoxNames());
+    }
+
+    /**
+     * Gibt alle verfügbaren Editions-Namen zurück
+     * @return Liste aller Editions-Namen
+     */
+    @Operation(summary = "Lädt alle verfügbaren Editions-Namen", description = "Gibt eine Liste aller Editions-Namen zurück")
+    @ApiResponse(responseCode = "200", description = "Editions-Namen erfolgreich geladen")
+    @GetMapping("/editions")
+    public ResponseEntity<List<String>> getAllEditionNames() {
+        return ResponseEntity.ok(Edition.getAllEditionNames());
+    }
+
 }

@@ -24,8 +24,8 @@ public class BoxDTO {
 
     /**
      * Erstellt ein {@link BoxDTO}-Objekt aus einer {@link Box}-Entität.
-     * Die Methode übernimmt die wichtigsten Eigenschaften der Box -Name, Kapazität und
-     * enthaltente Pokemon - und mappt jedes enthaltene {@link OwnedPokemon} via
+     * Die Methode übernimmt die wichtigsten Eigenschaften der Box-Name, Kapazität und
+     * enthaltende Pokemon - und mapping jedes enthaltene {@link OwnedPokemon} via
      * {@link OwnedPokemonDTO#from(OwnedPokemon)} ein ein DTO für die API-Ausgabe.
      * @param box Die zu konvertierende Box-Entität
      * @return Eine für das Frontend geeignete DTO-Repräsentation der Box

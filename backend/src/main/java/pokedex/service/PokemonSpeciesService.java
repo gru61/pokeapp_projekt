@@ -44,7 +44,7 @@ public class PokemonSpeciesService {
     /**
      * Gibt eine Pokemon-Art anhand dessen Pokedex-ID zurück
      * @param pokedexId die Pokedex-ID der gesuchten Art
-     * @return Ein Optional mit der gefundenen Pokemon-Arten oder leer, falls keine Art gefunden wurde
+     * @return Ein Optional mit der gefundenen Pokemon-Art oder leer, falls keine Art gefunden wurde
      */
     public Optional<PokemonSpecies> getByPokedexId(int pokedexId) {
         logger.info("Pokemon-Art per Pokedex-ID: {} abgerufen", pokedexId);

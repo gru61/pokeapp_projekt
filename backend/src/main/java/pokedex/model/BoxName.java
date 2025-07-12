@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 /**
 * Enum für die Darstellung der verschiedenen Boxen im System.
 * Enthält auch lesbare Namen für die Anzeige im Frontend.
-* TEAM Slot >1 && <=6
-* BOX.... >0 && <=20
+* TEAM Slot >1 && ≤6
+* BOX >0 && ≤20
 */
 
 @Getter

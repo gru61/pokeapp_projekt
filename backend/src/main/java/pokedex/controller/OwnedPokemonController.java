@@ -17,7 +17,7 @@ import java.util.List;
 
 
 /**
- * Controller zu Verwaltung gefangener Pokemon über die REST-API.
+ * Controller zur Verwaltung gefangener Pokemon über die REST-API.
  * Bietet Endpunkte zum Hinzufügen, Bearbeiten, Löschen und Laden von Pokemon
  */
 @RestController
@@ -69,7 +69,7 @@ public class OwnedPokemonController {
 
     /**
      * Fügt ein neues Pokemon hinzu
-     * @param request Die Eingabedaten (ID, Nicknamen, Level, Box, Edition)
+     * @param request Die Eingabedaten (ID, Nickname, Level, Box, Edition)
      * @return Das neue hinzugefügte Pokemon
      */
     @Operation(summary = "Fügt ein neues gefangenes Pokemon hinzu", description = "Wichtiger Endpunkt zum Erfassen eines neuen Pokemon")

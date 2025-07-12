@@ -19,7 +19,6 @@ public enum Edition {
     GRÜN("Grün");
 
     private final String displayName;
-    public Edition name;
 
     Edition(String displayName) {
         this.displayName = displayName;
