@@ -1,0 +1,254 @@
+/* ============================================
+ * shared.css
+ * Gemeinsame Styles für wiederverwendbare Komponenten
+ * (Pokémon-Karten, Grid, Typen, Overlays etc.)
+ * ============================================ */
+
+/* ---------- Grid ---------- */
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* ---------- Pokémon-Karte ---------- */
+.pokemon-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px #101b3833;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18px 12px 18px 12px;
+    min-height: 150px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    color: #162447;
+}
+.pokemon-card:hover,
+.pokemon-card:focus {
+    transform: scale(1.03);
+    box-shadow: 0 8px 32px #101b3855;
+    outline: none;
+}
+
+/* Edition-Farben und Schriftfarben für Karten */
+.pokemon-card.edition-gelb  { background: #ffe84a; color: #2a2a2a; }
+.pokemon-card.edition-rot   { background: #d21f27; color: #fff; }
+.pokemon-card.edition-blau  { background: #1976d2; color: #fff; }
+.pokemon-card.edition-grün  { background: #4dad3d; color: #fff; }
+
+/* ---------- Overlay: identische Farblogik mit leichter Transparenz ---------- */
+.overlay-card {
+    border-radius: 20px;
+    box-shadow: 0 8px 40px #1f406899;
+    padding: 36px 36px 30px 36px;
+    min-width: 330px;
+    min-height: 420px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    transition: background 0.15s;
+    color: #162447;
+}
+.overlay-card.edition-gelb  { background: #ffe84ad9; color: #2a2a2a; }
+.overlay-card.edition-rot   { background: #d21f27e6; color: #fff; }
+.overlay-card.edition-blau  { background: #1976d2e6; color: #fff; }
+.overlay-card.edition-grün  { background: #4dad3de6; color: #fff; }
+
+/* ---------- Meta-Info oben links: Edition über Boxname ---------- */
+.pokemon-meta-topleft {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 2;
+    min-width: 56px;
+}
+
+.pokemon-edition,
+.pokemon-boxname {
+    font-size: 1.04rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background: none;
+    padding: 0;
+    opacity: 0.96;
+    margin: 0 0 1px 0;
+    position: static;
+    text-shadow: 0 2px 8px #fff9, 0 1px 0 #fff;
+    border-radius: 8px;
+}
+
+/* ---------- Pokédex-ID oben rechts ---------- */
+.pokemon-speciesid {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+/* ---------- Sprite ---------- */
+.pokemon-sprite {
+    width: 120px !important;
+    height: 120px !important;
+    image-rendering: crisp-edges;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* ---------- Name und Nickname ---------- */
+.pokemon-name {
+    margin-top: 4px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pokemon-nickname {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.pokemon-realname {
+    font-size: 0.95rem;
+    color: #888;
+}
+
+/* ---------- Level unter dem Namen ---------- */
+.pokemon-level-inline {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 6px 0 0 0;
+    text-align: center;
+}
+
+/* ---------- Zusatzinfos (Grid etc. falls benötigt) ---------- */
+.pokemon-infos {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 0.98rem;
+    color: #162447;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* ---------- Typen ---------- */
+.pokemon-types {
+    display: flex;
+    gap: 4px;
+    margin-top: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.poke-type {
+    padding: 2px 12px;
+    border-radius: 999px;
+    font-size: 1rem;
+    color: #222;
+    font-weight: 600;
+    text-transform: capitalize;
+    border: 1px solid #e5e5e5;
+    min-width: 64px;
+    text-align: center;
+}
+.poke-type.normal   { background: #A8A77A; color: #fff; }
+.poke-type.pflanze  { background: #7AC74C; color: #fff; }
+.poke-type.gift     { background: #A33EA1; color: #fff; }
+.poke-type.feuer    { background: #EE8130; color: #fff; }
+.poke-type.flug     { background: #A98FF3; color: #222; }
+.poke-type.wasser   { background: #6390F0; color: #fff; }
+.poke-type.käfer    { background: #A6B91A; color: #fff; }
+.poke-type.elektro  { background: #F7D02C; color: #222; }
+.poke-type.boden    { background: #E2BF65; color: #222; }
+.poke-type.kampf    { background: #C22E28; color: #fff; }
+.poke-type.psycho   { background: #F95587; color: #fff; }
+.poke-type.gestein  { background: #B6A136; color: #fff; }
+.poke-type.eis      { background: #96D9D6; color: #222; }
+.poke-type.geist    { background: #735797; color: #fff; }
+.poke-type.drache   { background: #6F35FC; color: #fff; }
+
+/* ---------- Overlay ---------- */
+.overlay-bg {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(20,24,48,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+
+.overlay-sprite {
+    width: 170px;
+    height: 170px;
+    object-fit: contain;
+    image-rendering: crisp-edges;
+}
+
+/* Felder im Overlay mittig */
+.overlay-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 18px;
+    align-items: center;
+}
+.overlay-fields label {
+    font-weight: 700;
+    margin-bottom: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    width: 80%;
+    max-width: 340px;
+}
+.overlay-fields input,
+.overlay-fields select {
+    padding: 7px 12px;
+    font-size: 1.04rem;
+    border-radius: 8px;
+    border: 1px solid #b0b7d1;
+    background: #fff;
+    color: #222;
+    width: 100%;
+    text-align: center;
+}
+
+/* Entwicklungssprite im Overlay besonders groß */
+.overlay-evo-sprite {
+    width: 170px;
+    height: 170px;
+    display: block;
+    margin: 12px auto 8px auto;
+    object-fit: contain;
+    image-rendering: crisp-edges;
+}
+
+/* ---------- Fehlermeldungen ---------- */
+.error-message {
+    color: red;
+    margin: 10px 0;
+}

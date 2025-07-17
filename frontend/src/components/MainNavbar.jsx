@@ -1,3 +1,8 @@
+/**
+ * @component MainNavbar
+ * @description Globale Navigationsleiste. Bleibt auf allen Seiten sichtbar.
+ */
+
 import { NavLink } from "react-router-dom";
 
 export default function MainNavbar() {
@@ -10,7 +15,7 @@ export default function MainNavbar() {
                 Pokédex
             </NavLink>
             <NavLink to="/owned" className={({ isActive }) => "mainnavbar-link" + (isActive ? " active" : "")}>
-                Pokémon in Besitz
+                Eigene Pokémon
             </NavLink>
             <NavLink to="/boxes" className={({ isActive }) => "mainnavbar-link" + (isActive ? " active" : "")}>
                 Boxen

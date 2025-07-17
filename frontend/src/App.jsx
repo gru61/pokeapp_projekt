@@ -1,3 +1,8 @@
+/**
+ * @file App.jsx
+ * @description Hauptkomponente der Anwendung. Regelt das Routing und zeigt auf jeder Seite die MainNavbar an.
+ */
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainNavbar from "./components/MainNavbar";
 import HomePage from "./pages/HomePage";
@@ -5,7 +10,7 @@ import PokedexPage from "./pages/PokedexPage";
 import OwnedPage from "./pages/OwnedPage";
 import BoxenPage from "./pages/BoxenPage";
 
-function App() {
+export default function App() {
     return (
         <BrowserRouter>
             <MainNavbar />
@@ -18,4 +23,3 @@ function App() {
         </BrowserRouter>
     );
 }
-export default App;

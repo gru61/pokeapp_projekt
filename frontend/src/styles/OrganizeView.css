@@ -1,0 +1,265 @@
+/* OrganizeView.css */
+
+.organize-container {
+    display: flex;
+    gap: 3vw;
+    padding: 40px 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.organize-panel {
+    flex: 1;
+    background: #e7f0fa;
+    border-radius: 16px;
+    padding: 22px;
+    min-width: 300px;
+    max-width: 500px;
+    transition: background-color 0.2s ease;
+}
+
+.organize-panel h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.organize-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.organize-controls select {
+    font-size: 1rem;
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: white;
+}
+
+.pokemon-grid {
+    min-height: 260px;
+}
+
+.draggable-card {
+    cursor: grab;
+}
+
+.draggable-card:active {
+    cursor: grabbing;
+}
+
+/* Drag & Drop Effekte */
+.organize-panel.drag-over {
+    background-color: #d0f0ff;
+    border: 2px dashed #1976d2;
+}
+
+/* Fehlermeldung / Ladezustand */
+.loading,
+.error {
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+}
+
+/* Zurück-Button */
+.back-btn {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #888;
+}
+
+@media (max-width: 768px) {
+    .organize-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .organize-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+}/* OrganizeView.css */
+
+.organize-container {
+    display: flex;
+    gap: 3vw;
+    padding: 40px 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.organize-panel {
+    flex: 1;
+    background: #e7f0fa;
+    border-radius: 16px;
+    padding: 22px;
+    min-width: 300px;
+    max-width: 500px;
+    transition: background-color 0.2s ease;
+}
+
+.organize-panel h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.organize-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.organize-controls select {
+    font-size: 1rem;
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: white;
+}
+
+.pokemon-grid {
+    min-height: 260px;
+}
+
+.draggable-card {
+    cursor: grab;
+}
+
+.draggable-card:active {
+    cursor: grabbing;
+}
+
+/* Drag & Drop Effekte */
+.organize-panel.drag-over {
+    background-color: #d0f0ff;
+    border: 2px dashed #1976d2;
+}
+
+/* Fehlermeldung / Ladezustand */
+.loading,
+.error {
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+}
+
+/* Zurück-Button */
+.back-btn {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #888;
+}
+
+@media (max-width: 768px) {
+    .organize-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .organize-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+}/* OrganizeView.css */
+
+.organize-container {
+    display: flex;
+    gap: 3vw;
+    padding: 40px 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.organize-panel {
+    flex: 1;
+    background: #e7f0fa;
+    border-radius: 16px;
+    padding: 22px;
+    min-width: 300px;
+    max-width: 500px;
+    transition: background-color 0.2s ease;
+}
+
+.organize-panel h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.organize-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.organize-controls select {
+    font-size: 1rem;
+    padding: 6px 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: white;
+}
+
+.pokemon-grid {
+    min-height: 260px;
+}
+
+.draggable-card {
+    cursor: grab;
+}
+
+.draggable-card:active {
+    cursor: grabbing;
+}
+
+/* Drag & Drop Effekte */
+.organize-panel.drag-over {
+    background-color: #d0f0ff;
+    border: 2px dashed #1976d2;
+}
+
+/* Fehlermeldung / Ladezustand */
+.loading,
+.error {
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+}
+
+.error {
+    color: red;
+}
+
+/* Zurück-Button */
+.back-btn {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #888;
+}
+
+@media (max-width: 768px) {
+    .organize-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .organize-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+}

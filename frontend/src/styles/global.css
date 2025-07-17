@@ -1,18 +1,24 @@
-/* ---------- Global Styles ---------- */
+/* ============================================
+ * global.css
+ * Globale Grund-Styles für das gesamte Projekt
+ * (Farben, Body, Schrift, Navbar, Buttons, Scrollbars)
+ * ============================================ */
+
+/* ---------- Body und Grundfarben ---------- */
 body {
-    background: #162447;       /* Dunkelblau */
+    background: #162447;
     margin: 0;
     min-height: 100vh;
     font-family: 'Segoe UI', Arial, sans-serif;
-    color: #f8f8f8;            /* Helle Schrift für Lesbarkeit */
+    color: #f8f8f8;
 }
 
-/* ---------- Navbar (MainNavbar) ---------- */
+/* ---------- Main Navbar ---------- */
 .mainnavbar-root {
     display: flex;
     gap: 2rem;
     padding: 1.5rem;
-    background: #1f4068;      /* Etwas helleres Dunkelblau */
+    background: #1f4068;
     border-bottom: 1px solid #283655;
 }
 
@@ -27,25 +33,30 @@ body {
 
 .mainnavbar-link.active,
 .mainnavbar-link:hover {
-    color: #ffb400;           /* Gelb für aktiven Link/Hover */
+    color: #ffb400;
     font-weight: bold;
     border-bottom: 2px solid #ffb400;
 }
 
+/* ---------- Buttons ---------- */
+.add-btn {
+    margin-top: 22px;
+    padding: 10px 24px;
+    border-radius: 16px;
+    border: none;
+    font-size: 1.1rem;
+    background: #1976d2;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.add-btn:hover {
+    background: #114488;
+}
+
 /* ---------- HomePage Cards ---------- */
-.homepage-root {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 75vh;
-    justify-content: center;
-}
-
-.homepage-title {
-    margin-bottom: 60px;
-    color: #f8f8f8;
-}
-
 .homepage-cards {
     display: flex;
     gap: 60px;
@@ -54,36 +65,74 @@ body {
 }
 
 .homepage-card {
-    width: 260px;
-    height: 260px;
-    background: #fff;
-    color: #162447;
-    border-radius: 20px;
-    box-shadow: 0 6px 32px #101b38aa;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* <-- Vertikal zentrieren */
+    position: relative;
+    width: 260px;
+    height: 260px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 6px 32px #101b38aa;
     cursor: pointer;
-    font-size: 20px;
-    transition: transform 0.1s, box-shadow 0.1s;
-    border: none;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: box-shadow 0.15s, transform 0.15s;
 }
+
+/* Halbtransparenter Layer für bessere Lesbarkeit */
+.homepage-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(25,32,56,0.67);
+    z-index: 1;
+}
+
+/* Text zentral platzieren */
+.homepage-card h2,
+.homepage-card span {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    padding: 0 10px;
+}
+
+/* Titel */
+.homepage-card h2 {
+    color: #fff;
+    font-size: 1.55rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.38);
+    letter-spacing: 0.04em;
+}
+
+/* Beschreibung */
+.homepage-card span {
+    color: #fff;
+    font-size: 1.08rem;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.25);
+}
+
+/* Hover-Effekt bleibt */
 .homepage-card:hover, .homepage-card:focus {
     transform: scale(1.03);
     box-shadow: 0 12px 32px #101b38cc;
     outline: none;
 }
-.homepage-card h2 {
-    margin-bottom: 15px;
-}
-.homepage-card span {
-    color: #888;
-    font-size: 16px;
-    text-align: center;
+
+/* Fokus-Highlight für bessere Accessibility */
+.homepage-card:focus {
+    box-shadow: 0 0 0 3px #ffb40088;
 }
 
-/* ---------- Optional: Scrollbar und Fokus ---------- */
+
+/* ---------- Scrollbar und Fokus ---------- */
 ::-webkit-scrollbar {
     width: 8px;
     background: #1f4068;
@@ -93,7 +142,7 @@ body {
     border-radius: 10px;
 }
 
-/* Tab-Fokus für bessere Accessibility */
+/* Tab-Fokus für Accessibility */
 .homepage-card:focus {
     box-shadow: 0 0 0 3px #ffb40088;
 }
