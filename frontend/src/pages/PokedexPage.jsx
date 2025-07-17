@@ -1,15 +1,10 @@
-/**
- * @component PokedexPage
- * @description Pokédex-Ansicht mit Grid aller Pokémon-Species. Overlay zum Hinzufügen in den Besitz bei Klick.
- */
-
 import { useEffect, useState } from "react";
 import PokemonCard from "../components/PokemonCard";
 import PokemonOverlay from "../components/PokemonOverlay";
 
 /**
- * Die Seite lädt alle Species aus dem Pokédex.
- * Bei Klick auf eine Karte erscheint ein Overlay mit der Option, das Pokémon zu fangen (Hinzufügen).
+ * @component PokedexPage
+ * @description Pokédex-Ansicht mit Grid aller Pokémon-Species. Overlay zum Hinzufügen in den Besitz bei Klick.
  */
 export default function PokedexPage() {
     const [species, setSpecies] = useState([]);
@@ -31,6 +26,7 @@ export default function PokedexPage() {
         fetch("http://localhost:8080/api/editions").then(r => r.json()).then(setEditions);
         fetch("http://localhost:8080/api/boxnames").then(r => r.json()).then(setBoxes);
     }, []);
+
 
     if (loading) return <div>Lade Pokédex…</div>;
     if (error) return <div>Fehler: {error}</div>;

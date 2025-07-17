@@ -13,7 +13,7 @@ export default function BoxenPage() {
 
     // Hole Editionen und Boxen für Dropdowns
     useEffect(() => {
-        const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
         fetch(`${API_URL}/api/boxes/editions`)
             .then(res => res.json())

@@ -3,8 +3,7 @@ import PokemonOverlay from "../components/PokemonOverlay";
 
 /**
  * @component OwnedPage
- * @description Übersicht und Verwaltung aller gefangenen Pokémon.
- * PATCH nutzt exakt die Backend-Konventionen (Enum-Strings).
+ * @description Übersicht und Verwaltung aller gefangenen Pokémon. Anzeige & Overlay-Logik wie gewünscht.
  */
 export default function OwnedPage() {
     const [pokemons, setPokemons] = useState([]);
@@ -43,30 +42,47 @@ export default function OwnedPage() {
             .then(setPokemons);
     };
 
+    // Mapping von Edition auf CSS-Klasse (groß/klein sicherstellen)
+    const editionToClass = ed =>
+        ed ? "edition-" + ed.toLowerCase().replace("ü", "u").replace("ä", "a").replace("ö", "o") : "";
+
     if (loading) return <div className="loading">Lade deine Pokémon…</div>;
     if (error) return <div className="error">Fehler: {error}</div>;
 
     return (
-        <div className="owned-page">
-            <h1 className="page-title">Deine Pokémon ({pokemons.length})</h1>
+        <div>
+            <h1 className="owned-title">Deine Pokémon ({pokemons.length})</h1>
             <div className="pokemon-grid">
                 {pokemons.map(mon => {
                     const spriteNr = String(mon.pokedexId).padStart(3, "0");
                     const showNickname = mon.nickname && mon.nickname.trim().length > 0;
+                    const cardClass = `pokemon-card ${editionToClass(mon.edition)}`;
                     return (
                         <div
                             key={mon.id}
-                            className="pokemon-card"
+                            className={cardClass}
                             tabIndex={0}
                             onClick={() => setActiveMon(mon)}
+                            style={{ position: "relative" }}
                         >
-                            <div className="pokemon-speciesid">#{spriteNr}</div>
+                            {/* Oben rechts: Pokédex-ID */}
+                            <div className="pokemon-speciesid" style={{ right: 16, top: 14 }}>
+                                #{spriteNr}
+                            </div>
+                            {/* Oben links: Edition & Box */}
+                            <div style={{ position: "absolute", top: 16, left: 14, textAlign: "left", lineHeight: 1.22 }}>
+                                <div className="pokemon-edition">{mon.edition}</div>
+                                <div className="pokemon-box">{mon.box || mon.boxName}</div>
+                            </div>
+                            {/* Sprite */}
                             <img
                                 src={`/sprites/${spriteNr}.png`}
                                 alt={mon.speciesName}
                                 className="pokemon-sprite"
                                 onError={e => { e.target.onerror = null; e.target.src = "/sprites/placeholder.png"; }}
+                                style={{ marginTop: 32 }}
                             />
+                            {/* Name/Nickname */}
                             <div className="pokemon-name">
                                 {showNickname ? (
                                     <>
@@ -77,11 +93,11 @@ export default function OwnedPage() {
                                     <span>{mon.speciesName}</span>
                                 )}
                             </div>
-                            <div className="pokemon-infos">
-                                <span className="pokemon-level">Lvl. {mon.level}</span>
-                                <span className="pokemon-edition">{mon.edition}</span>
-                                <span className="pokemon-box">{mon.box || mon.boxName}</span>
+                            {/* Level direkt unter Name */}
+                            <div className="pokemon-level-inline" style={{ margin: "8px 0" }}>
+                                Lvl. {mon.level}
                             </div>
+                            {/* Typen */}
                             <div className="pokemon-types">
                                 <span className={`poke-type ${mon.type1.toLowerCase()}`}>{mon.type1}</span>
                                 {mon.type2 && mon.type2 !== "NORMAL" && mon.type2 !== mon.type1 && (
@@ -93,6 +109,7 @@ export default function OwnedPage() {
                 })}
             </div>
 
+            {/* --- Overlay für Details/Update/Entwicklung --- */}
             {activeMon && (
                 <PokemonOverlay
                     mon={activeMon}
@@ -107,36 +124,29 @@ export default function OwnedPage() {
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(updatedData)
                         });
-                        reloadList();
-                        setActiveMon(null);
+                        reloadList(); // Das Overlay bleibt offen!
                     }}
                     onDelete={async () => {
                         if (window.confirm("Löschen?")) {
                             await fetch(`http://localhost:8080/api/pokemon/${activeMon.id}`, {
-                                method: "DELETE",
+                                method: "DELETE"
                             });
                             reloadList();
-                            setActiveMon(null);
+                            setActiveMon(null); // Nach Löschen Overlay schließen!
                         }
                     }}
-                    onEvolve={async (targetPokedexId) => {
-                        // Entwicklung PATCH, alle Felder
+                    onEvolve={async (targetPokedexId, body) => {
                         await fetch(`http://localhost:8080/api/pokemon/${activeMon.id}`, {
                             method: "PATCH",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({
-                                pokedexId: targetPokedexId,
-                                nickname: activeMon.nickname,
-                                level: activeMon.level,
-                                edition: activeMon.edition,
-                                box: activeMon.box || activeMon.boxName
-                            }),
+                                ...body,
+                                pokedexId: targetPokedexId
+                            })
                         });
                         reloadList();
-                        setActiveMon(null);
                     }}
                     onClose={() => setActiveMon(null)}
-                    reloadList={reloadList}
                 />
             )}
         </div>
