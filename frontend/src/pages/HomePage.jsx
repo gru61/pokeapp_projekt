@@ -1,13 +1,30 @@
-/**
- * @component HomePage
- * @description Startseite mit drei großen Karten: Pokédex, Eigene Pokémon und Boxen.
- * Jede Karte leitet auf die entsprechende Unterseite weiter.
- */
-
 import { useNavigate } from "react-router-dom";
 import pokedexImg from "../assets/pokedex.png";
 import teamImg from "../assets/team.png";
 import boxImg from "../assets/boxen.png";
+
+
+/**
+ * @component HomePage
+ * @description
+ * Startseite der App mit drei prominent platzierten Auswahlkarten:
+ * - Pokédex: Übersicht aller Pokémon-Arten der ersten Generation
+ * - Eigene Pokémon: Verwaltung und Anzeige aller gefangenen Pokémon
+ * - Boxen: Boxen- und Team-Management mit Drag & Drop
+ *
+ * Jede Karte führt per Klick (oder Tastendruck "Enter") zur zugehörigen Unterseite.
+ *
+ * Besonderheiten:
+ * - Die Karten zeigen ein passendes Bild und eine Kurzbeschreibung an.
+ * - Navigation erfolgt über das React Router `useNavigate`-Hook.
+ * - Barrierefrei: Karten sind auch per Tab-Fokus und Enter bedienbar.
+ *
+ * Typische Verwendung:
+ * - Dies ist die Landing Page deiner Anwendung, Einstieg für alle Hauptfunktionen.
+ *
+ * @example
+ * <HomePage />
+ */
 
 export default function HomePage() {
     const navigate = useNavigate();

@@ -1,8 +1,19 @@
-/* ============================================
+/* ===========================================================================
  * global.css
- * Globale Grund-Styles für das gesamte Projekt
- * (Farben, Body, Schrift, Navbar, Buttons, Scrollbars)
- * ============================================ */
+ *
+ * Globale Basis-Styles für das gesamte Projekt.
+ *
+ * Enthält Design-Standards für:
+ * - Hintergrund, Farben, Schriftarten
+ * - Haupt-Navigationsleiste (MainNavbar)
+ * - Buttons (z.B. .add-btn)
+ * - HomePage-Karten (Kachel-Design)
+ * - Scrollbars & Fokus-Effekte (Accessibility)
+ *
+ * Sollte in der App **nur einmal** eingebunden werden (z.B. in main.jsx)!
+ * ===========================================================================
+ */
+
 
 /* ---------- Body und Grundfarben ---------- */
 body {

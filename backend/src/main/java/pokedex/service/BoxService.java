@@ -14,29 +14,59 @@ import pokedex.repository.OwnedPokemonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
- * Service zur Verwaltung von Boxen und zum Verschieben von Pokemon zwischen den Boxen
+ * Service-Klasse zur Verwaltung aller Box-bezogenen Operationen.
+ * <p>
+ * Stellt Methoden bereit, um Boxen und deren Inhalt zu laden, Kapazitäten zu prüfen
+ * und Pokémon zwischen Boxen (und ggf. Editionen) zu verschieben.
+ * Validiert dabei die wichtigsten Spielregeln und gibt im Fehlerfall eigene Exceptions aus.
+ * </p>
+ *
+ * <b>Typische Verwendung:</b>
+ * <ul>
+ *   <li>Überprüfen, ob eine Box voll ist</li>
+ *   <li>Pokémon von einer Box/Edition in eine andere verschieben (inkl. Validierung der Regeln)</li>
+ *   <li>Suche nach einer bestimmten Box anhand Name + Edition</li>
+ * </ul>
+ *
+ * <b>Besonderheiten:</b>
+ * <ul>
+ *   <li>Transaktional: Die Verschiebung ist atomic, entweder vollständig oder gar nicht.</li>
+ *   <li>Wirft spezifische Exceptions bei Regelverletzungen (z.B. Box voll, gleiche Box, nicht gefunden).</li>
+ *   <li>Nutzt Logging für Nachvollziehbarkeit wichtiger Aktionen.</li>
+ * </ul>
+ *
+ * @author grubi
  */
 @Service
 public class BoxService {
 
+    /** Repository für Boxen. */
     private final BoxRepository boxRepo;
+
+    /** Repository für gefangene Pokémon. */
     private final OwnedPokemonRepository ownedRepo;
 
+    /** Logger für Nachvollziehbarkeit und Debugging. */
     private static final Logger logger = LoggerFactory.getLogger(BoxService.class);
 
+    /**
+     * Konstruktor für Dependency Injection.
+     * @param boxRepo   Repository für Boxen
+     * @param ownedRepo Repository für gefangene Pokémon
+     */
     public BoxService(BoxRepository boxRepo, OwnedPokemonRepository ownedRepo) {
         this.boxRepo = boxRepo;
         this.ownedRepo = ownedRepo;
     }
 
     /**
-     * Gibt eine Box anhand dessen Namens zurück.
-     * @param name Den Namen der Box (TEAM / BOX1)
-     * @param edition Der Standort der BOX
+     * Sucht eine Box anhand ihres Namens und der zugehörigen Edition.
+     *
+     * @param name    Name der Box (TEAM, BOX1, ...)
+     * @param edition Edition, zu der die Box gehört
      * @return Die gefundene Box
-     * @throws NotFoundException Wenn die Box nicht gefunden wird
+     * @throws NotFoundException Wenn keine passende Box existiert
      */
     public Box getBoxByNameAndEdition(BoxName name, Edition edition) {
         logger.info("Box mit dem Namen {} aus der Edition {} abgerufen", name, edition);
@@ -45,10 +75,15 @@ public class BoxService {
     }
 
     /**
-     * Prüft, ob die Box voll ist.
-     * @param name Der Name der Box
-     * @param edition Der Standort der BOX
-     * @return true, wenn die BOX voll ist
+     * Prüft, ob eine bestimmte Box voll ist (Kapazitätsgrenze erreicht).
+     * <ul>
+     *   <li>Team-Box: maximal 6 Pokémon</li>
+     *   <li>Normale Box: maximal 20 Pokémon</li>
+     * </ul>
+     *
+     * @param name    Name der Box
+     * @param edition Edition, zu der die Box gehört
+     * @return true, wenn die Box voll ist, sonst false
      */
     public boolean isFull(BoxName name, Edition edition) {
         Box box = getBoxByNameAndEdition(name, edition);
@@ -62,43 +97,53 @@ public class BoxService {
     }
 
     /**
-     * Verschiebt ein Pokemon von einer Quell-Box in die Ziel-Box
-     * @param sourceBox Die aktuelle Box des Pokemon
-     * @param targetBox Die Ziel-Box, in die das Pokemon soll
-     * @param pokemonId Die ID des zu verschiebenden Pokemon
-     * @param sourceEdition Die aktuelle Edition
-     * @param targetEdition Die Ziel-Edition
-     * @throws SameBoxException Wenn Quell und Ziel Box identisch sind
-     * @throws NotFoundException Wenn das gefangene Pokemon nicht gefunden wurde
-     * @throws IllegalStateException Wenn dsa Pokemon nicht in der Quell-Box vorhanden ist
-     * @throws BoxFullException Wenn die Ziel-Box voll ist
+     * Verschiebt ein Pokémon von einer Quell-Box/-Edition in eine Ziel-Box/-Edition.
+     * <p>
+     * Prüft dabei u.a.:
+     * <ul>
+     *   <li>Quell- und Zielbox dürfen nicht identisch sein (sonst {@link SameBoxException})</li>
+     *   <li>Pokémon muss in der Quell-Box/-Edition liegen (sonst {@link IllegalStateException})</li>
+     *   <li>Ziel-Box darf nicht voll sein (sonst {@link BoxFullException})</li>
+     *   <li>Pokémon und Boxen/Editionen müssen existieren ({@link NotFoundException})</li>
+     * </ul>
+     * Wird als Transaktion ausgeführt.
+     *
+     * @param pokemonId     Die ID des zu verschiebenden Pokémon
+     * @param sourceBox     Name der Quell-Box
+     * @param targetBox     Name der Ziel-Box
+     * @param sourceEdition Edition der Quell-Box
+     * @param targetEdition Edition der Ziel-Box
+     * @throws SameBoxException      Wenn Quelle und Ziel identisch sind
+     * @throws NotFoundException     Wenn Pokémon oder Zielbox nicht gefunden wurden
+     * @throws IllegalStateException Wenn das Pokémon nicht in der Quellbox/-edition liegt
+     * @throws BoxFullException      Wenn die Zielbox voll ist
      */
     @Transactional
     public void movePokemon(Long pokemonId, BoxName sourceBox, Edition sourceEdition, BoxName targetBox, Edition targetEdition) {
 
-        //Validierung: Quell und Ziel Box dürfen nicht gleich sein
+        // Validierung: Quell- und Zielbox dürfen nicht gleich sein
         if (sourceBox.equals(targetBox) && sourceEdition.equals(targetEdition)) {
             throw new SameBoxException("Du versuchst ein Pokemon in dieselbe Box zu verschieben");
         }
 
-        //Pokemon laden
+        // Pokémon laden
         OwnedPokemon pokemon = ownedRepo.findById(pokemonId)
                 .orElseThrow(() -> new NotFoundException("Pokemon mit der ID " + pokemonId + " nicht gefunden"));
 
-        //Validierung: Pokemon muss sich in der Quell-Box befinden
+        // Validierung: Pokémon muss sich in der Quell-Box/-Edition befinden
         if (!pokemon.getBox().getName().equals(sourceBox) || !pokemon.getEdition().equals(sourceEdition)) {
             throw new IllegalStateException("Pokemon befindet sich nicht in der angegebenen Quell-Box");
-
         }
-        //Ziel-Box laden
+
+        // Ziel-Box laden
         Box target = getBoxByNameAndEdition(targetBox, targetEdition);
 
-        //Validierung: Prüft, ob die Ziel-Box voll ist
+        // Validierung: Ziel-Box darf nicht voll sein
         if (isFull(targetBox, targetEdition)) {
             throw new BoxFullException("Die Ziel Box " + targetBox + " ist schon voll");
         }
 
-        //Speichert die Verschiebung
+        // Verschiebung durchführen
         pokemon.setBox(target);
         pokemon.setEdition(targetEdition);
         logger.info("Pokemon {} erfolgreich von {} aus der Edition {} nach {} Edition {} verschoben",

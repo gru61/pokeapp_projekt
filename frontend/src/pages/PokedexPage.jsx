@@ -4,8 +4,26 @@ import PokemonOverlay from "../components/PokemonOverlay";
 
 /**
  * @component PokedexPage
- * @description Pokédex-Ansicht mit Grid aller Pokémon-Species. Overlay zum Hinzufügen in den Besitz bei Klick.
+ * @description
+ * Übersicht aller verfügbaren Pokémon-Arten (Species) im Pokédex.
+ *
+ * Die Seite zeigt ein Grid mit allen Pokémon-Species.
+ * Beim Klick auf eine Karte öffnet sich ein Overlay, mit dem das ausgewählte Pokémon
+ * in den eigenen Besitz (Team/Box) übernommen werden kann (z.B. für Fang-/Sammel-Modus).
+ *
+ * Besonderheiten:
+ * - Lädt beim Start alle Pokémon-Arten sowie die verfügbaren Editionen und Boxnamen.
+ * - Nutzt {@link PokemonCard} für die Darstellung jedes einzelnen Pokémon.
+ * - Nutzt {@link PokemonOverlay} für das Hinzufügen in den Besitz.
+ * - Behandelt Lade- und Fehlerzustände.
+ *
+ * Typische Verwendung:
+ * - Hauptansicht zum Durchblättern, Suchen und gezielten "Fangen"/Hinzufügen von Pokémon.
+ *
+ * @example
+ * <PokedexPage />
  */
+
 export default function PokedexPage() {
     const [species, setSpecies] = useState([]);
     const [loading, setLoading] = useState(true);

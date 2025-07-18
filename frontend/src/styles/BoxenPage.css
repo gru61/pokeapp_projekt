@@ -1,7 +1,17 @@
-/* ============================================
+/* ===========================================================================
  * BoxenPage.css
- * Spezifisches Styling für die Boxen- und Organize-Ansicht
- * ============================================ */
+ *
+ * Spezifisches Styling für die Boxen- und Organize-Ansicht der Anwendung.
+ *
+ * Enthält Layout, Farben und Interaktionsdesigns für:
+ * - Die Hauptansicht von Boxen und Teams
+ * - Navbar/Drowpdowns zur Boxen-/Editionsauswahl
+ * - Kapazitätsanzeige
+ * - Drag & Drop-Bereiche in OrganizeView
+ *
+ * Sollte nur in BoxenPage & OrganizeView importiert werden!
+ * ===========================================================================
+ */
 
 /* BoxenPage Navbar */
 .boxenpage-container {

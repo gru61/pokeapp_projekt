@@ -2,6 +2,56 @@ import { useState, useEffect } from "react";
 import PokemonCard from "./PokemonCard";
 import "../styles/OrganizeView.css";
 
+// --- Helper für API-Konvertierung (Enum, BoxName) ---
+function apiEnum(val) {
+    if (!val) return "";
+    return val
+        .toUpperCase()
+        .replace("Ü", "UE")
+        .replace("Ö", "OE")
+        .replace("Ä", "AE")
+        .replace("ß", "SS");
+}
+
+function apiBoxName(name) {
+    if (!name) return "";
+    if (name === "Team") return "TEAM";
+    const boxMatch = name.match(/^Box (\d{1,2})$/);
+    if (boxMatch) {
+        return "BOX" + boxMatch[1];
+    }
+    // Fallback: alles groß, Leerzeichen raus
+    return name.toUpperCase().replace(/\s+/g, "");
+}
+
+
+/**
+ * @component OrganizeView
+ * @description
+ * Zwei-Panel-Ansicht zur Organisation und zum Drag & Drop-Verschieben von Pokémon zwischen verschiedenen Boxen und Editionen.
+ *
+ * Nutzer können aus Dropdowns Edition und Box für linkes sowie rechtes Panel wählen und Pokémon per Drag & Drop zwischen den Panels verschieben.
+ * Die Komponente sorgt für API-Mapping (Enum-Konvertierung für die Backend-Kommunikation) und behandelt Fehlerzustände (Laden, Verschieben, etc.).
+ *
+ * Props:
+ * @param {string[]} editions - Liste der verfügbaren Editionen (z.B. ["Rot", "Blau", ...]).
+ * @param {string[]} boxes - Liste der verfügbaren Boxnamen (z.B. ["Team", "Box 1", ...]).
+ * @param {function} onBack - Callback, um zur vorherigen Ansicht zurückzukehren.
+ *
+ * Besonderheiten:
+ * - Nutzt interne Helper (apiEnum, apiBoxName) zur Umwandlung der UI-Strings in die erwarteten API-Enumwerte.
+ * - Lädt automatisch beim Wechsel der Auswahl jeweils die Pokémon der gewählten Box/Edition.
+ * - Drag & Drop ist zwischen beiden Panels möglich. Die Verschiebung löst einen API-Call aus und aktualisiert anschließend beide Seiten.
+ * - Fehler und Ladezustände werden je Panel separat behandelt.
+ *
+ * Typische Verwendung:
+ * - Wird im Boxen-/Organize-Modus angezeigt, wenn der Nutzer Pokémon gezielt zwischen Boxen/Editionen umsortieren möchte.
+ * - Im UI eingebunden z.B. via <OrganizeView editions={...} boxes={...} onBack={...} />
+ *
+ * @example
+ * <OrganizeView editions={["Rot", "Blau"]} boxes={["Team", "Box 1"]} onBack={() => navigate(-1)} />
+ */
+
 export default function OrganizeView({ editions, boxes, onBack }) {
     const [leftEdition, setLeftEdition] = useState(editions[0] || "");
     const [leftBox, setLeftBox] = useState(boxes[0] || "");
@@ -19,16 +69,24 @@ export default function OrganizeView({ editions, boxes, onBack }) {
     const [isDraggingOverLeft, setIsDraggingOverLeft] = useState(false);
     const [isDraggingOverRight, setIsDraggingOverRight] = useState(false);
 
-    // Lade Daten für beide Boxen
+    // Lade Daten für beide Boxen (mit Mapping!)
     useEffect(() => {
         if (leftEdition && leftBox) {
-            fetchData(`http://localhost:8080/api/boxes/${leftEdition}/${leftBox}`, setLeftData, setLoadingLeft);
+            fetchData(
+                `http://localhost:8080/api/boxes/${apiEnum(leftEdition)}/${apiBoxName(leftBox)}`,
+                setLeftData,
+                setLoadingLeft
+            );
         }
     }, [leftEdition, leftBox]);
 
     useEffect(() => {
         if (rightEdition && rightBox) {
-            fetchData(`http://localhost:8080/api/boxes/${rightEdition}/${rightBox}`, setRightData, setLoadingRight);
+            fetchData(
+                `http://localhost:8080/api/boxes/${apiEnum(rightEdition)}/${apiBoxName(rightBox)}`,
+                setRightData,
+                setLoadingRight
+            );
         }
     }, [rightEdition, rightBox]);
 
@@ -55,10 +113,12 @@ export default function OrganizeView({ editions, boxes, onBack }) {
         setIsDraggingOverRight(false);
     };
 
-    const movePokemon = async (targetBox, targetEdition) => {
+    // --- Move mit korrektem Enum-Mapping! ---
+    const movePokemon = async (targetBoxDisplay, targetEditionDisplay) => {
         try {
             const response = await fetch(
-                `http://localhost:8080/api/boxes/${draggedPokemon.boxName}/move-to/${targetBox}/${draggedPokemon.id}/${draggedPokemon.edition}/${targetEdition}`,
+                `http://localhost:8080/api/boxes/${apiBoxName(draggedPokemon.boxName)}/move-to/` +
+                `${apiBoxName(targetBoxDisplay)}/${draggedPokemon.id}/${apiEnum(draggedPokemon.edition)}/${apiEnum(targetEditionDisplay)}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -67,9 +127,17 @@ export default function OrganizeView({ editions, boxes, onBack }) {
 
             if (!response.ok) throw new Error("Verschieben fehlgeschlagen");
 
-            // Aktualisiere beide Boxen
-            fetchData(`http://localhost:8080/api/boxes/${leftEdition}/${leftBox}`, setLeftData, setLoadingLeft);
-            fetchData(`http://localhost:8080/api/boxes/${rightEdition}/${rightBox}`, setRightData, setLoadingRight);
+            // Aktualisiere beide Boxen (mit Mapping!)
+            fetchData(
+                `http://localhost:8080/api/boxes/${apiEnum(leftEdition)}/${apiBoxName(leftBox)}`,
+                setLeftData,
+                setLoadingLeft
+            );
+            fetchData(
+                `http://localhost:8080/api/boxes/${apiEnum(rightEdition)}/${apiBoxName(rightBox)}`,
+                setRightData,
+                setLoadingRight
+            );
         } catch (err) {
             setError("Fehler beim Verschieben: " + err.message);
         } finally {

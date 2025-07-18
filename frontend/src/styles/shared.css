@@ -1,8 +1,21 @@
-/* ============================================
+/* ===========================================================================
  * shared.css
- * Gemeinsame Styles für wiederverwendbare Komponenten
- * (Pokémon-Karten, Grid, Typen, Overlays etc.)
- * ============================================ */
+ *
+ * Stylesheet mit gemeinsamen, wiederverwendbaren Komponenten-Styles für das gesamte Projekt.
+ *
+ * Enthält Design-Standards und Layouts für:
+ * - Pokémon-Karten (Grid & Karte)
+ * - Typ-Badges & Typfarben
+ * - Overlays & Modals
+ * - Fehler- und Statusmeldungen
+ * - Edition-spezifische Farbgebung
+ *
+ * Wird von verschiedenen Seiten und Komponenten (z.B. HomePage, PokedexPage, OwnedPage, Overlays etc.) importiert.
+ *
+ * ACHTUNG: Sollte nur für Komponenten genutzt werden, die in mehreren Views erscheinen!
+ * ===========================================================================
+ */
+
 
 /* ---------- Grid ---------- */
 .pokemon-grid {

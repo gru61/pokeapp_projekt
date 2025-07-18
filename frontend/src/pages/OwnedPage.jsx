@@ -3,8 +3,26 @@ import PokemonOverlay from "../components/PokemonOverlay";
 
 /**
  * @component OwnedPage
- * @description Übersicht und Verwaltung aller gefangenen Pokémon. Anzeige & Overlay-Logik wie gewünscht.
+ * @description
+ * Übersicht und Verwaltung aller eigenen (gefangenen) Pokémon.
+ *
+ * Die Seite lädt beim Mounten alle relevanten Daten (Pokémon, Editionen, Boxen, Arten, Evolutionsregeln)
+ * und zeigt eine große Grid-Ansicht aller eigenen Pokémon mit Edition, Box, Sprite, Name/Nickname, Level und Typ(en).
+ *
+ * Besonderheiten:
+ * - Per Klick auf ein Pokémon öffnet sich ein Overlay ({@link PokemonOverlay}) zum Bearbeiten, Entwickeln oder Löschen.
+ * - Nach Änderungen wird die Liste automatisch neu geladen.
+ * - Fehler- und Ladezustände werden behandelt.
+ * - Edition und Box werden jeweils als Text und für die Farblogik (per CSS-Klasse) verwendet.
+ *
+ * Typische Verwendung:
+ * - Anzeige der aktuellen Sammlung ("Mein Inventar").
+ * - Startpunkt für Editieren, Entwickeln oder Löschen von Pokémon.
+ *
+ * @example
+ * <OwnedPage />
  */
+
 export default function OwnedPage() {
     const [pokemons, setPokemons] = useState([]);
     const [loading, setLoading] = useState(true);

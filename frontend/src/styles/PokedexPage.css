@@ -1,7 +1,13 @@
-/* ============================================
+/* ===========================================================================
  * PokedexPage.css
- * Spezifisches Styling für die Pokédex-Ansicht
- * ============================================ */
+ *
+ * Spezifisches Styling für die Pokédex-Ansicht.
+ *
+ * Gestaltet Überschrift, Layout und optische Besonderheiten der Pokédex-Seite.
+ * Sollte ausschließlich in der PokedexPage eingebunden werden!
+ * ===========================================================================
+ */
+
 
 .pokedex-title {
     color: #f8f8f8;

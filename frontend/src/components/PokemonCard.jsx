@@ -2,21 +2,35 @@ import React from "react";
 
 
 /**
- * Renders a Pokémon card component displaying details about a Pokémon.
+ * @component PokemonCard
+ * @description
+ * Zeigt eine Pokémon-Karte mit den wichtigsten Details zu einem einzelnen Pokémon an.
+ * Die Karte kann in Grids, Box-Ansichten oder Übersichten verwendet werden. Beim Klick wird
+ * das übergebene Callback ausgelöst (z.B. für ein Overlay oder Details).
  *
- * @param {Object} props - The properties passed to the component.
- * @param {Object} props.mon - The Pokémon data object.
- * @param {string} props.mon.pokedexId - The Pokédex ID of the Pokémon.
- * @param {string} [props.mon.nickname] - The nickname of the Pokémon, if any.
- * @param {string} [props.mon.boxName] - The name of the storage box where the Pokémon resides.
- * @param {string} [props.mon.speciesName] - The species name of the Pokémon.
- * @param {string} [props.mon.name] - The name of the Pokémon. Used as a fallback if speciesName is unavailable.
- * @param {number} [props.mon.level] - The level of the Pokémon.
- * @param {string} [props.mon.edition] - The edition or generation of the Pokémon.
- * @param {string} [props.mon.type1] - The primary type of the Pokémon.
- * @param {string} [props.mon.type2] - The secondary type of the Pokémon, if any.
- * @param {Function} props.onClick - The callback function triggered when the Pokémon card is clicked.
- * @return {JSX.Element} The rendered Pokémon card component.
+ * Props:
+ * @param {Object} props.mon - Pokémon-Datenobjekt (erwartet alle Infos zu diesem Pokémon)
+ * @param {string|number} props.mon.pokedexId - Die Pokédex-ID (wird als 3-stellige Nummer für das Sprite genutzt)
+ * @param {string} [props.mon.nickname] - Optionaler Nickname, falls gesetzt
+ * @param {string} [props.mon.boxName] - Name der Box (z.B. "Team", "Box 1")
+ * @param {string} [props.mon.speciesName] - Artname (z.B. "Bisasam")
+ * @param {string} [props.mon.name] - Alternativer Artname, Fallback falls speciesName fehlt
+ * @param {number} [props.mon.level] - Das Level des Pokémon
+ * @param {string} [props.mon.edition] - Edition/Fassung, zu der das Pokémon gehört
+ * @param {string} [props.mon.type1] - Primärer Typ
+ * @param {string} [props.mon.type2] - Sekundärer Typ (falls vorhanden und nicht gleich type1)
+ * @param {Function} props.onClick - Callback, wird bei Klick auf die Karte ausgelöst
+ *
+ * Besonderheiten:
+ * - Gibt bei fehlendem Sprite ein Platzhalter-Bild aus.
+ * - Zeigt, falls vorhanden, Nickname und Artname getrennt an.
+ * - Typen werden farbig dargestellt, auch Doppelt-Typen.
+ * - Die Edition färbt die Karte (CSS-Klassen wie "edition-gelb", "edition-rot" etc.).
+ *
+ * @returns {JSX.Element} Die gerenderte Pokémon-Karte
+ *
+ * @example
+ * <PokemonCard mon={mon} onClick={() => setActiveMon(mon)} />
  */
 export default function PokemonCard({ mon, onClick }) {
     const spriteNr = String(mon.pokedexId).padStart(3, "0");

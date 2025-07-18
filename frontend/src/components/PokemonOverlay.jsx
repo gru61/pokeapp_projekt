@@ -2,19 +2,50 @@ import { useState } from "react";
 
 /**
  * @component PokemonOverlay
- * @description Universelles Overlay für Pokémon-Detailansicht
- * @param {Object} props
- * @param {Object} props.mon - Species- oder Besitz-Objekt
- * @param {Array} props.editions
- * @param {Array} props.boxes
- * @param {Object} props.evolutionRules - für "update"
- * @param {Array} props.species - für "update"
- * @param {"add"|"update"} props.mode - steuert Layout & Logik
- * @param {function} [props.onSave] - für "add" (Pokédex)
- * @param {function} [props.onUpdate] - für "update" (Besitz)
- * @param {function} [props.onDelete] - für "update"
- * @param {function} [props.onEvolve] - für "update"
- * @param {function} props.onClose
+ * @description
+ * Universelles Overlay für Detailansicht, Hinzufügen und Bearbeitung eines Pokémon.
+ *
+ * Je nach Modus ("add" oder "update") kann das Overlay entweder zum Erfassen eines neuen Pokémon
+ * (inkl. Level, Edition, Box, Nickname) oder zur Anzeige und Bearbeitung eines bereits gefangenen Pokémon
+ * (inkl. Entwicklung, Editieren, Löschen) genutzt werden.
+ *
+ * Props:
+ * @param {Object} props.mon - Pokémon-Objekt (Arten- oder Besitzobjekt)
+ * @param {Array<string>} props.editions - Liste der verfügbaren Editionen
+ * @param {Array<string>} props.boxes - Liste der verfügbaren Boxnamen
+ * @param {Object} [props.evolutionRules] - Mapping aller Entwicklungsregeln (für "update"-Modus)
+ * @param {Array<Object>} [props.species] - Liste aller Pokémon-Arten (für Entwicklungsanzeige)
+ * @param {"add"|"update"} [props.mode="update"] - Steuert Layout und Logik des Overlays
+ * @param {Function} [props.onSave] - Wird beim Speichern im "add"-Modus aufgerufen
+ * @param {Function} [props.onUpdate] - Wird beim Speichern im "update"-Modus aufgerufen
+ * @param {Function} [props.onDelete] - Wird beim Löschen aufgerufen (nur im "update"-Modus)
+ * @param {Function} [props.onEvolve] - Wird beim Entwickeln aufgerufen (nur im "update"-Modus)
+ * @param {Function} props.onClose - Wird beim Schließen des Overlays aufgerufen (Pflicht)
+ *
+ * Besonderheiten:
+ * - Zeigt Detailinformationen, Sprite, Typen, Nickname, Level, Edition und Box.
+ * - Im "add"-Modus: Formular für neues Pokémon; Pflichtfelder validiert.
+ * - Im "update"-Modus: Bearbeiten aller Felder, Entwickeln und Löschen möglich.
+ * - Mögliche Entwicklungen werden (sofern vorhanden) mit Sprites und Button angezeigt.
+ * - Fehlerzustände und Ladeindikatoren werden behandelt.
+ *
+ * Typische Verwendung:
+ * - Als Overlay bei Klick auf eine Pokémon-Karte in Pokédex oder Besitz-Ansicht.
+ * - Für Drag & Drop oder Entwicklung direkt aus der Detailansicht.
+ *
+ * @example
+ * <PokemonOverlay
+ *   mon={pokemon}
+ *   editions={["Rot", "Blau"]}
+ *   boxes={["Team", "Box 1"]}
+ *   evolutionRules={{ 25: [26] }}
+ *   species={[...]}
+ *   mode="update"
+ *   onUpdate={...}
+ *   onDelete={...}
+ *   onEvolve={...}
+ *   onClose={() => setActiveMon(null)}
+ * />
  */
 export default function PokemonOverlay({
                                            mon,

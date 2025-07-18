@@ -2,6 +2,48 @@ import { useState, useEffect } from "react";
 import PokemonCard from "../components/PokemonCard";
 import OrganizeView from "../components/OrganizeView";
 
+function apiEnum(val) {
+    if (!val) return "";
+    return val
+        .toUpperCase()
+        .replace("Ü", "UE");
+}
+
+function apiBoxName(name) {
+    if (!name) return "";
+    if (name === "Team") return "TEAM";
+    const boxMatch = name.match(/^Box (\d{1,2})$/);
+    if (boxMatch) {
+        return "BOX" + boxMatch[1];
+    }
+    return name.toUpperCase().replace((/\s+/g, ""));
+}
+
+
+/**
+ * @component BoxenPage
+ * @description
+ * Hauptseite zur Anzeige und Verwaltung der Boxen und Teams.
+ * Nutzer können Edition und Box per Dropdown auswählen und sehen alle enthaltenen Pokémon.
+ * Es wird die aktuelle Kapazität angezeigt, und bei Klick auf "Organisieren" wird in einen
+ * speziellen Drag & Drop-Modus gewechselt (via {@link OrganizeView}).
+ *
+ * Besonderheiten:
+ * - Lädt beim Start alle verfügbaren Editionen und Boxnamen vom Backend.
+ * - Zeigt je nach Auswahl die Pokémon der gewählten Box und Edition an.
+ * - Maximalkapazität (Team = 6, sonst 20) wird berechnet und angezeigt.
+ * - Nutzt {@link PokemonCard} für die Darstellung jedes einzelnen Pokémon.
+ * - Im "Organisieren"-Modus kann der Nutzer per Drag & Drop Pokémon zwischen Boxen/Editionen verschieben.
+ * - Fehler beim Laden werden abgefangen und führen zu leeren Boxen.
+ *
+ * Typische Verwendung:
+ * - Bestandteil des Hauptmenüs/Navigationsbereichs, meist auf /boxes geroutet.
+ * - Ermöglicht dem Nutzer das Durchsehen und Umsortieren aller Pokémon-Boxen.
+ *
+ * @example
+ * <BoxenPage />
+ */
+
 export default function BoxenPage() {
     const [editions, setEditions] = useState([]);
     const [boxes, setBoxes] = useState([]);
@@ -36,7 +78,8 @@ export default function BoxenPage() {
     useEffect(() => {
         if (selectedEdition && selectedBox) {
             setLoadingBox(true);
-            fetch(`http://localhost:8080/api/boxes/${selectedEdition}/${selectedBox}`)
+            // --- Hier Enum-Mapping anwenden ---
+            fetch(`http://localhost:8080/api/boxes/${apiEnum(selectedEdition)}/${apiBoxName(selectedBox)}`)
                 .then(res => {
                     if (!res.ok) throw new Error("Box konnte nicht geladen werden!");
                     return res.json();

@@ -1,4 +1,20 @@
-/* OrganizeView.css */
+/* ===========================================================================
+ * OrganizeView.css
+ *
+ * Spezifisches Styling für die OrganizeView-Komponente.
+ *
+ * Gestaltet das Layout, die Drag & Drop-Panels, die Steuerleisten und das Grid für die
+ * Zwei-Panel-Organisation von Pokémon (Boxenwechsel, Editionen etc.).
+ *
+ * Besonderheiten:
+ * - Flexibles Layout (responsive)
+ * - Drag & Drop-Effekte (Hervorhebung beim Überfahren)
+ * - Separate Fehler- und Ladeanzeigen
+ * - Fixierter Zurück-Button für Mobile/Desktop
+ *
+ * Wird ausschließlich von OrganizeView verwendet!
+ * ===========================================================================
+ */
 
 .organize-container {
     display: flex;

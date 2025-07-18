@@ -10,16 +10,47 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * REST-Controller zum Bereitstellen der verfügbaren Enum-Werte (BoxName, Edition) für das Frontend.
+ *
+ * <p>
+ * Bietet Endpunkte, um alle unterstützten Boxnamen und Editionsnamen direkt als Enum-Array oder als Mapping auszugeben.
+ * Diese Endpunkte erleichtern insbesondere die Synchronisation der zulässigen Auswahloptionen im UI.
+ * </p>
+ *
+ * Beispielhafte Verwendung im Frontend:
+ * <ul>
+ *     <li>Laden aller Boxnamen für ein Dropdown-Menü</li>
+ *     <li>Anzeige von "sprechenden" Namen (DisplayName) statt Enum-Keys</li>
+ * </ul>
+ *
+ * Pfade beginnen mit <code>/api</code>.
+ *
+ * @author grubi
+ */
 @RestController
 @RequestMapping("/api")
 public class EnumController {
 
-    // --- Boxnames ---
+    /**
+     * Gibt alle Werte des Enums {@link BoxName} als Array zurück.
+     *
+     * @return Array aller BoxName-Werte (z.B. für Auswahl im UI)
+     */
     @GetMapping("/boxnames")
     public BoxName[] getBoxNames() {
         return BoxName.values();
     }
 
+    /**
+     * Gibt ein Mapping aus DisplayName und Enum-Name für alle {@link BoxName}-Werte zurück.
+     * <p>
+     * Key = Anzeigename (DisplayName), Value = Enum-Konstante.
+     * <br>Beispiel: <code>{"Team": "TEAM", "Box 1": "BOX1", ...}</code>
+     * <br>Erlaubt es dem Frontend, sowohl eine sprechende Anzeige als auch den technischen Key zu verwenden.
+     *
+     * @return Map (DisplayName → Enum-Name)
+     */
     @GetMapping("/boxnames/mapping")
     public Map<String, String> getBoxNameMapping() {
         return Arrays.stream(BoxName.values())
@@ -29,12 +60,24 @@ public class EnumController {
                 ));
     }
 
-    // --- Editions ---
+    /**
+     * Gibt alle Werte des Enums {@link Edition} als Array zurück.
+     *
+     * @return Array aller Edition-Werte (z. B. für Auswahl im UI)
+     */
     @GetMapping("/editions")
     public Edition[] getEditions() {
         return Edition.values();
     }
 
+    /**
+     * Gibt ein Mapping aus DisplayName und Enum-Name für alle {@link Edition}-Werte zurück.
+     * <p>
+     * Key = Anzeigename (DisplayName), Value = Enum-Konstante.
+     * <br>Beispiel: <code>{"Rot": "ROT", "Blau": "BLAU", ...}</code>
+     *
+     * @return Map (DisplayName → Enum-Name)
+     */
     @GetMapping("/editions/mapping")
     public Map<String, String> getEditionMapping() {
         return Arrays.stream(Edition.values())
