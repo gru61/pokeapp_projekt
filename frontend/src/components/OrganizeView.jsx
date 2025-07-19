@@ -1,28 +1,7 @@
 import { useState, useEffect } from "react";
 import PokemonCard from "./PokemonCard";
 import "../styles/OrganizeView.css";
-
-// --- Helper für API-Konvertierung (Enum, BoxName) ---
-function apiEnum(val) {
-    if (!val) return "";
-    return val
-        .toUpperCase()
-        .replace("Ü", "UE")
-        .replace("Ö", "OE")
-        .replace("Ä", "AE")
-        .replace("ß", "SS");
-}
-
-function apiBoxName(name) {
-    if (!name) return "";
-    if (name === "Team") return "TEAM";
-    const boxMatch = name.match(/^Box (\d{1,2})$/);
-    if (boxMatch) {
-        return "BOX" + boxMatch[1];
-    }
-    // Fallback: alles groß, Leerzeichen raus
-    return name.toUpperCase().replace(/\s+/g, "");
-}
+import { apiEnum, apiBoxName } from "../utils/enumHelper";
 
 
 /**

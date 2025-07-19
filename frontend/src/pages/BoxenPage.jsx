@@ -1,24 +1,7 @@
 import { useState, useEffect } from "react";
 import PokemonCard from "../components/PokemonCard";
 import OrganizeView from "../components/OrganizeView";
-
-function apiEnum(val) {
-    if (!val) return "";
-    return val
-        .toUpperCase()
-        .replace("Ü", "UE");
-}
-
-function apiBoxName(name) {
-    if (!name) return "";
-    if (name === "Team") return "TEAM";
-    const boxMatch = name.match(/^Box (\d{1,2})$/);
-    if (boxMatch) {
-        return "BOX" + boxMatch[1];
-    }
-    return name.toUpperCase().replace((/\s+/g, ""));
-}
-
+import { apiEnum, apiBoxName } from "../utils/enumHelper";
 
 /**
  * @component BoxenPage

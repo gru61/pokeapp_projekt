@@ -1,0 +1,62 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Snapshot von PokemonCard 1`] = `
+<DocumentFragment>
+  <div
+    class="pokemon-card edition-rot"
+  >
+    <div
+      class="pokemon-meta-topleft"
+    >
+      <span
+        class="pokemon-edition"
+      >
+        Rot
+      </span>
+      <span
+        class="pokemon-boxname"
+      >
+        Team
+      </span>
+    </div>
+    <div
+      class="pokemon-speciesid"
+    >
+      #025
+    </div>
+    <img
+      alt="Pikachu"
+      class="pokemon-sprite"
+      src="/sprites/025.png"
+    />
+    <div
+      class="pokemon-name"
+    >
+      <span
+        class="pokemon-nickname"
+      >
+        Pika
+      </span>
+      <span
+        class="pokemon-realname"
+      >
+        Pikachu
+      </span>
+    </div>
+    <div
+      class="pokemon-level-inline"
+    >
+      Lvl. 7
+    </div>
+    <div
+      class="pokemon-types"
+    >
+      <span
+        class="poke-type elektro"
+      >
+        ELEKTRO
+      </span>
+    </div>
+  </div>
+</DocumentFragment>
+`;
