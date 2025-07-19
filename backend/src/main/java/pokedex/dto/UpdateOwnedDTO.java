@@ -29,15 +29,15 @@ import pokedex.model.Edition;
  * <b>Validierungsregeln:</b>
  * <ul>
  *   <li><b>pokedexId</b>: Optional, aber erforderlich für eine Entwicklung (Species-Wechsel). Muss existieren.</li>
- *   <li><b>nickname</b>: Maximal 10 Zeichen, kann null sein.</li>
+ *   <li><b>nickname</b>: Maximal 10 Zeichen, können null sein.</li>
  *   <li><b>level</b>: Zwischen 1 und 100, falls gesetzt.</li>
  *   <li><b>edition</b>: Optional, aber erforderlich bei Wechsel der Edition.</li>
- *   <li><b>box</b>: Optional, aber erforderlich bei Wechsel der Box.</li>
+ *   <li><b>box</b>: optional, aber erforderlich bei Wechsel der Box.</li>
  * </ul>
  *
  * <b>Anmerkung:</b>
  * Die auskommentierten {@code @NotNull}-Constraints können bei Bedarf aktiviert werden,
- * falls z.B. im UI verpflichtend bestimmte Felder geändert werden sollen.
+ * falls z. B. im UI verpflichtend bestimmte Felder geändert werden sollen.
  *
  * @author grubi
  */

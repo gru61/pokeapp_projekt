@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Daten-Transfer-Objekt (DTO) zur Repräsentation einer Box mit allen enthaltenen Pokémon für die API.
  * <p>
- * Wird verwendet, um Box-Daten inkl. aller enthaltenen Pokémon an das UI/Frontend zu übergeben.
+ * Wird verwendet, um Box-Daten inklusive aller enthaltenen Pokémon an das UI/Frontend zu übergeben.
  * Kapselt nur die wichtigsten Eigenschaften (Name, Kapazität, Pokémon-Liste).
  * </p>
  *
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Setter
 public class BoxDTO {
 
-    /** Der Name der Box (z.B. "Team", "Box 1" etc.). */
+    /** Der Name der Box (z. B. "Team", "Box 1" etc.). */
     private BoxName name;
 
     /** Maximale Kapazität dieser Box. */

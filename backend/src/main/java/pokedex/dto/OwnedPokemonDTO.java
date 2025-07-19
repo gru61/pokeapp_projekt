@@ -10,7 +10,7 @@ import pokedex.model.OwnedPokemon;
  * Daten-Transfer-Objekt (DTO) zur Übertragung und Anzeige eines eigenen (gefangenen) Pokémon im Frontend.
  * <p>
  * Dieses DTO wird verwendet, um alle relevanten Eigenschaften eines Pokémon vom Backend
- * an das Frontend zu übertragen – z.B. für die Anzeige in Listen, Overlays oder Detailseiten.
+ * an das Frontend zu übertragen – z. B. für die Anzeige in Listen, Overlays oder Detailseiten.
  * </p>
  *
  * <b>Hinweise zur Serialisierung:</b>
@@ -22,7 +22,7 @@ import pokedex.model.OwnedPokemon;
  * <b>Typische Verwendung:</b>
  * <ul>
  *     <li>Als Antwort-Objekt bei Abfragen aller gefangenen Pokémon ("/api/pokemon")</li>
- *     <li>Zur Anzeige der wichtigsten Eigenschaften in UI-Komponenten (z.B. Karten, Listen, Overlay-Details)</li>
+ *     <li>Zur Anzeige der wichtigsten Eigenschaften in UI-Komponenten (z. B. Karten, Listen, Overlay-Details)</li>
  * </ul>
  *
  * @author grubi
@@ -40,7 +40,7 @@ public class OwnedPokemonDTO {
     /** Level des Pokémon. */
     private int level;
 
-    /** Edition, aus der das Pokémon stammt. */
+    /** Die Edition, aus der Pokémon stammt. */
     private Edition edition;
 
     /** Box, in der sich das Pokémon aktuell befindet. */
@@ -49,13 +49,13 @@ public class OwnedPokemonDTO {
     /** Pokédex-ID (Species) dieses Pokémon (z.B. 25 für Pikachu). */
     private int pokedexId;
 
-    /** Name der Pokémon-Art (z.B. "Pikachu"). */
+    /** Name der Pokémon-Art (z. B. "Pikachu"). */
     private String speciesName;
 
     /** Primärer Typ (z.B. "Elektro"). */
     private String type1;
 
-    /** Sekundärer Typ (kann null sein, z.B. bei Mono-Typen). */
+    /** Sekundärer Typ (kann null sein, z. B. bei Mono-Typen). */
     private String type2;
 
     /** Privater Standard-Konstruktor, damit nur statische Factory verwendet wird. */
@@ -64,7 +64,7 @@ public class OwnedPokemonDTO {
     /**
      * Erzeugt ein {@link OwnedPokemonDTO} aus einem {@link OwnedPokemon}-Objekt.
      * <p>
-     * Übernimmt alle relevanten Eigenschaften (inkl. verschachtelter Objekte wie Species und Typen).
+     * Übernimmt alle relevanten Eigenschaften (inklusive verschachtelter Objekte wie Species und Typen).
      * </p>
      *
      * @param pokemon Das Quellobjekt aus dem Model

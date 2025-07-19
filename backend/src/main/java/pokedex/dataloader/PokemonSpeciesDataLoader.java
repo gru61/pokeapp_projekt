@@ -25,7 +25,7 @@ import java.sql.SQLException;
  * <b>Hinweis:</b>
  * Der Loader ist idempotent – er prüft vor dem Import, ob bereits Daten vorhanden sind,
  * und verhindert so doppeltes Einfügen der Pokémon-Species.
- * Fehler beim SQL-Import werden im Log ausgegeben und als Exception weitergeworfen.
+ * Fehler beim SQL-Import werden im Log ausgegeben und als Exception weiter geworfen.
  *
  * @author grubi
  */
@@ -57,7 +57,7 @@ public class PokemonSpeciesDataLoader implements CommandLineRunner {
      * aus dem Klassenpfad ausgeführt, um alle Arten zu importieren.
      *
      * @param args Nicht genutzt.
-     * @throws Exception Wird weitergeworfen, falls ein schwerwiegender Fehler beim Laden oder Ausführen des Skripts auftritt.
+     * @throws Exception Wird weiter geworfen, falls ein schwerwiegender Fehler beim Laden oder Ausführen des Skripts auftritt.
      */
     @Override
     public void run(String... args) throws Exception {

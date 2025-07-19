@@ -1,0 +1,9 @@
+pokedex
+pokedex.config
+pokedex.controller
+pokedex.dataloader
+pokedex.dto
+pokedex.exception
+pokedex.model
+pokedex.repository
+pokedex.service

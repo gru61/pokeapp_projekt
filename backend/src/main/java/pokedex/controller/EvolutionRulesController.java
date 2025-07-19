@@ -1,5 +1,7 @@
 package pokedex.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pokedex.service.EvolutionService;
@@ -51,6 +53,10 @@ public class EvolutionRulesController {
      *
      * @return Map&lt;Pokedex-Id, Liste möglicher Ziel-Pokedex-Ids&gt;
      */
+    @Operation(summary = "Liefert alle Entwicklungsregeln der Pokémon",
+            description = "Gibt eine Map zurück, die für jede Pokedex-Id eine Liste aller Ziel-Pokedex-Ids enthält, zu denen sich das Pokémon entwickeln kann."
+    )
+    @ApiResponse(responseCode = "200", description = "Entwicklungsregeln wurden erfolgreich geladen")
     @GetMapping("/evolution-rules")
     public Map<Integer, List<Integer>> getEvolutionRules() {
         return evolutionService.getEvolutionRules();

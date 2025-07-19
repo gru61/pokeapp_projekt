@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * Konfiguriert CORS (Cross-Origin Resource Sharing) für die Webanwendung.
  * Typischer Anwendungsfall:
- * Die Konfiguration erlaubt es, dass dein Frontend (z.B. React/Vite-App) mit dem Backend kommunizieren darf,
- * auch wenn sie auf unterschiedlichen Hosts oder Ports laufen.
+ * Die Konfiguration erlaubt es, dass dein Frontend (z. B. React/Vite-App) mit dem Backend kommunizieren darf,
+ * auch wenn sie auf unterschiedlichen Hosts oder Ports läuft.
  * Erlaubte HTTP-Methoden:
  * <ul>
  *     <li>GET</li>
