@@ -1,149 +1,151 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import PokemonCard from "../components/PokemonCard";
+import OrganizeView from "../components/OrganizeView";
+import { apiEnum, apiBoxName } from "../utils/enumHelper";
 
-export default function BoxesPage() {
+/**
+ * @component BoxenPage
+ * @description
+ * Hauptseite zur Anzeige und Verwaltung der Boxen und Teams.
+ * Nutzer können Edition und Box per Dropdown auswählen und sehen alle enthaltenen Pokémon.
+ * Es wird die aktuelle Kapazität angezeigt, und bei Klick auf "Organisieren" wird in einen
+ * speziellen Drag & Drop-Modus gewechselt (via {@link OrganizeView}).
+ *
+ * Besonderheiten:
+ * - Lädt beim Start alle verfügbaren Editionen und Boxnamen vom Backend.
+ * - Zeigt je nach Auswahl die Pokémon der gewählten Box und Edition an.
+ * - Maximalkapazität (Team = 6, sonst 20) wird berechnet und angezeigt.
+ * - Nutzt {@link PokemonCard} für die Darstellung jedes einzelnen Pokémon.
+ * - Im "Organisieren"-Modus kann der Nutzer per Drag & Drop Pokémon zwischen Boxen/Editionen verschieben.
+ * - Fehler beim Laden werden abgefangen und führen zu leeren Boxen.
+ *
+ * Typische Verwendung:
+ * - Bestandteil des Hauptmenüs/Navigationsbereichs, meist auf /boxes geroutet.
+ * - Ermöglicht dem Nutzer das Durchsehen und Umsortieren aller Pokémon-Boxen.
+ *
+ * @example
+ * <BoxenPage />
+ */
+
+export default function BoxenPage() {
     const [editions, setEditions] = useState([]);
-    const [boxNames, setBoxNames] = useState([]);
+    const [boxes, setBoxes] = useState([]);
     const [selectedEdition, setSelectedEdition] = useState("");
     const [selectedBox, setSelectedBox] = useState("");
-    const [box, setBox] = useState(null);
+    const [boxData, setBoxData] = useState(null);
     const [loadingBox, setLoadingBox] = useState(false);
+    const [organizeMode, setOrganizeMode] = useState(false);
 
-    // Lade Editions-Enum
+    // Hole Editionen und Boxen für Dropdowns
     useEffect(() => {
-        fetch("http://localhost:8080/api/editions")
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
+        fetch(`${API_URL}/api/boxes/editions`)
             .then(res => res.json())
             .then(data => {
                 setEditions(data);
                 if (data.length > 0) setSelectedEdition(data[0]);
-            });
-    }, []);
+            })
+            .catch(err => console.error("Fehler beim Laden der Editionen:", err));
 
-// Lade BoxName-Enum
-    useEffect(() => {
-        fetch("http://localhost:8080/api/boxnames")
+        fetch(`${API_URL}/api/boxes/names`)
             .then(res => res.json())
             .then(data => {
-                setBoxNames(data);
+                setBoxes(data);
                 if (data.length > 0) setSelectedBox(data[0]);
-            });
+            })
+            .catch(err => console.error("Fehler beim Laden der Boxnamen:", err));
     }, []);
 
-    // Lade Boxdaten immer bei Änderung
+    // Lade Box-Daten beim Wechsel
     useEffect(() => {
         if (selectedEdition && selectedBox) {
             setLoadingBox(true);
-            fetch(`http://localhost:8080/api/boxes/${selectedEdition}/${selectedBox}`)
+            // --- Hier Enum-Mapping anwenden ---
+            fetch(`http://localhost:8080/api/boxes/${apiEnum(selectedEdition)}/${apiBoxName(selectedBox)}`)
                 .then(res => {
                     if (!res.ok) throw new Error("Box konnte nicht geladen werden!");
                     return res.json();
                 })
-                .then(setBox)
-                .catch(() => setBox(null))
+                .then(setBoxData)
+                .catch(() => setBoxData(null))
                 .finally(() => setLoadingBox(false));
         }
     }, [selectedEdition, selectedBox]);
 
+    // Berechne Maximalkapazität
+    const maxCapacity = selectedBox === "Team" ? 6 : 20;
+    const currentCount = boxData?.pokemons.length || 0;
+
+    if (organizeMode) {
+        return (
+            <OrganizeView
+                editions={editions}
+                boxes={boxes}
+                onBack={() => setOrganizeMode(false)}
+            />
+        );
+    }
+
     return (
-        <div>
-            {/* BoxNavbar */}
-            <div style={{
-                display: "flex",
-                gap: "18px",
-                padding: "20px 32px 10px 32px",
-                background: "#1f4068",
-                borderBottom: "1px solid #283655",
-                alignItems: "center",
-                justifyContent: "center"
-            }}>
+        <div className="boxenpage-container">
+            {/* Box Navbar */}
+            <div className="box-navbar">
                 <select
                     value={selectedEdition}
-                    onChange={e => setSelectedEdition(e.target.value)}
-                    style={{
-                        fontSize: "1.1rem",
-                        padding: "6px 14px",
-                        borderRadius: "10px",
-                        border: "1px solid #283655",
-                        background: "#fff",
-                        color: "#162447",
-                        fontWeight: 500,
-                        minWidth: 130
-                    }}
+                    onChange={(e) => setSelectedEdition(e.target.value)}
                 >
-                    {editions.map(edition =>
-                        <option key={edition} value={edition}>{edition}</option>
-                    )}
+                    {editions.map((ed) => (
+                        <option key={ed} value={ed}>
+                            {ed}
+                        </option>
+                    ))}
                 </select>
+
                 <select
                     value={selectedBox}
-                    onChange={e => setSelectedBox(e.target.value)}
-                    style={{
-                        fontSize: "1.1rem",
-                        padding: "6px 14px",
-                        borderRadius: "10px",
-                        border: "1px solid #283655",
-                        background: "#fff",
-                        color: "#162447",
-                        fontWeight: 500,
-                        minWidth: 130
-                    }}
+                    onChange={(e) => setSelectedBox(e.target.value)}
                 >
-                    {boxNames.map(box =>
-                        <option key={box} value={box}>{box}</option>
-                    )}
+                    {boxes.map((box) => (
+                        <option key={box} value={box}>
+                            {box}
+                        </option>
+                    ))}
                 </select>
+
+                <button
+                    className="add-btn"
+                    style={{ marginLeft: 28, background: "#ffb400", color: "#222" }}
+                    onClick={() => setOrganizeMode(true)}
+                >
+                    Organisieren
+                </button>
             </div>
 
-            {/* Box-Inhalt */}
-            <div style={{ color: "#f8f8f8", textAlign: "center", marginTop: 32 }}>
-                <h2>Box: {selectedBox} | Edition: {selectedEdition}</h2>
+            {/* Hauptansicht */}
+            <div className="box-content">
+                <h2 className="box-title">
+                    Box: {selectedBox} | Edition: {selectedEdition}
+                </h2>
+
                 {loadingBox && <div>Lade Box...</div>}
-                {!loadingBox && box && (
+
+                {!loadingBox && (!boxData || boxData.pokemons.length === 0) && (
+                    <div className="no-pokemon">Keine Pokémon in dieser Box</div>
+                )}
+
+                {!loadingBox && boxData && boxData.pokemons.length > 0 && (
                     <>
-                        <div style={{ color: "#ffb400", margin: "8px" }}>
-                            Kapazität: {box.pokemons.length} / {box.capacity}
+                        <div className="box-capacity">
+                            Kapazität: {boxData.pokemons.length} / {boxData.capacity}
                         </div>
-                        <div className="owned-grid" style={{ marginTop: 24 }}>
-                            {box.pokemons.map(mon => {
-                                const spriteNr = String(mon.pokedexId).padStart(3, "0");
-                                const showNickname = mon.nickname && mon.nickname.trim().length > 0;
-                                return (
-                                    <div key={mon.id} className="owned-card" tabIndex={0}>
-                                        <div className="owned-speciesid">#{spriteNr}</div>
-                                        <img
-                                            src={`/sprites/${spriteNr}.png`}
-                                            alt={mon.speciesName}
-                                            className="owned-sprite"
-                                            onError={e => { e.target.onerror = null; e.target.src = "/sprites/placeholder.png"; }}
-                                        />
-                                        <div className="owned-name">
-                                            {showNickname ? (
-                                                <>
-                                                    <span className="owned-nickname">{mon.nickname}</span>
-                                                    <span className="owned-realname">{mon.speciesName}</span>
-                                                </>
-                                            ) : (
-                                                <span>{mon.speciesName}</span>
-                                            )}
-                                        </div>
-                                        <div className="owned-infos">
-                                            <span className="owned-level">Lvl. {mon.level}</span>
-                                            <span className="owned-edition">{mon.edition}</span>
-                                            <span className="owned-box">{mon.boxName}</span>
-                                        </div>
-                                        <div className="owned-types">
-                                            <span className={"poke-type " + mon.type1.toLowerCase()}>{mon.type1}</span>
-                                            {mon.type2 && mon.type2 !== "NORMAL" && mon.type2 !== mon.type1 ? (
-                                                <span className={"poke-type " + mon.type2.toLowerCase()}>{mon.type2}</span>
-                                            ) : null}
-                                        </div>
-                                    </div>
-                                );
-                            })}
+
+                        <div className="pokemon-grid">
+                            {boxData.pokemons.map((mon) => (
+                                <PokemonCard key={mon.id} mon={mon} />
+                            ))}
                         </div>
                     </>
-                )}
-                {!loadingBox && box && box.pokemons.length === 0 && (
-                    <div style={{ margin: "32px", color: "#888" }}>Keine Pokémon in dieser Box.</div>
                 )}
             </div>
         </div>

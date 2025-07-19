@@ -1,6 +1,5 @@
 package pokedex.service;
 
-
 import pokedex.exception.BoxFullException;
 import pokedex.exception.InvalidUpdateException;
 import pokedex.exception.NotFoundException;
@@ -17,24 +16,52 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-
 /**
- * Service zur Verwaltung von gefangenen Pokemon.
- * Enthält Logik zum Hinzufügen, Bearbeiten und Validieren
+ * Service zur Verwaltung und Validierung aller gefangenen Pokémon des Nutzers.
+ * <p>
+ * Stellt die zentrale Logik für das Hinzufügen, Bearbeiten, Löschen und Validieren von gefangenen Pokémon bereit.
+ * Prüft auf Einhaltung der Spielregeln (z.B. Box-Kapazität, Level, Evolution) und sorgt für die Interaktion mit
+ * Boxen, Arten und Evolutionsregeln.
+ * </p>
+ *
+ * <b>Besonderheiten:</b>
+ * <ul>
+ *   <li>Validiert alle Business Rules für gefangene Pokémon</li>
+ *   <li>Wirft passende Exceptions (z.B. {@link BoxFullException}, {@link InvalidUpdateException}, {@link NotFoundException})</li>
+ *   <li>Verwendet Logging für alle wichtigen Aktionen und Fehlerfälle</li>
+ *   <li>Nutzen von Service-Klassen für Species, Boxen und Evolutionsregeln</li>
+ * </ul>
+ *
+ * <b>Typische Verwendung:</b>
+ * <ul>
+ *   <li>UI- und API-Aufrufe zum Listen, Hinzufügen, Bearbeiten und Löschen von Pokémon</li>
+ *   <li>Automatische Validierung vor Speichern von Änderungen</li>
+ * </ul>
+ *
+ * @author grubi
  */
 @Service
 public class OwnedPokemonService {
 
-
+    /** Logger für alle wichtigen Aktionen. */
     private static final Logger logger = LoggerFactory.getLogger(OwnedPokemonService.class);
 
-
+    /** Repository für gefangene Pokémon. */
     private final OwnedPokemonRepository ownedRepo;
+    /** Service für Pokémon-Arten. */
     private final PokemonSpeciesService speciesService;
+    /** Service für Boxen/Teams. */
     private final BoxService boxService;
+    /** Service für Evolutionsregeln. */
     private final EvolutionService evolutionService;
 
-
+    /**
+     * Konstruktor für Dependency Injection.
+     * @param ownedRepo        Repository für eigene Pokémon
+     * @param speciesService   Service für Arten
+     * @param boxService       Service für Boxen/Teams
+     * @param evolutionService Service für Evolutionsregeln
+     */
     public OwnedPokemonService(OwnedPokemonRepository ownedRepo,
                                PokemonSpeciesService speciesService,
                                BoxService boxService,
@@ -46,51 +73,55 @@ public class OwnedPokemonService {
         this.evolutionService = evolutionService;
     }
 
-
     /**
-     * Gibt alle gefangenen Pokemon zurück.
-     * @return Liste aller gefangenen Pokemon
+     * Gibt eine Liste aller gefangenen Pokémon zurück.
+     *
+     * @return Liste aller eigenen Pokémon
      */
     public List<OwnedPokemon> getAllPokemon() {
         return ownedRepo.findAll();
     }
 
-
     /**
-     * Gibt ein gefangenes Pokemon anhand dessen ID zurück.
-     * @param id Die Id des gesuchten Pokemon
-     * @return Das gefundene Pokemon
-     * @throws NotFoundException Wenn das Pokemon nicht gefunden wird
+     * Sucht ein gefangenes Pokémon anhand seiner ID.
+     *
+     * @param id Die ID des gesuchten Pokémon
+     * @return Das gefundene Pokémon
+     * @throws NotFoundException Wenn das Pokémon nicht existiert
      */
     public OwnedPokemon getPokemonById(Long id) {
         logger.info("Suche das gefangene Pokemon per dessen ID. {}", id);
         return ownedRepo.findById(id)
-                .orElseThrow(()-> new NotFoundException("Pokemon mit der ID " + id + " nicht gefunden"));
+                .orElseThrow(() -> new NotFoundException("Pokemon mit der ID " + id + " nicht gefunden"));
     }
 
     /**
-     * Fügt ein neues Pokemon hinzu
-     * @param request Die Eingabedaten
-     * @return Das gespeicherte Pokemon
-     * @throws NotFoundException Wenn kein Pokemon mit der Pokedex-ID gefunden wurde
-     * @throws IllegalStateException Wenn die Ziel-Box nicht angegeben wurde
-     * @throws BoxFullException Wenn die Ziel-Box schon voll ist
+     * Fügt ein neues gefangenes Pokémon hinzu.
+     * <p>
+     * Validiert, dass die Pokémon-Art existiert, die Box angegeben ist und nicht voll ist.
+     * </p>
+     *
+     * @param request Die Eingabedaten für das neue Pokémon
+     * @return Das gespeicherte Pokémon
+     * @throws NotFoundException    Wenn die Pokémon-Art nicht existiert
+     * @throws IllegalStateException Wenn keine Ziel-Box angegeben wurde
+     * @throws BoxFullException     Wenn die Ziel-Box bereits voll ist
      */
     public OwnedPokemon addPokemon(CreateOwnedDTO request) {
         logger.info("Füge ein neues gefangenes Pokemon hinzu: {}", request);
 
-        // Lade die Species Daten des gefangenen Pokemon
+        // Lade die Species-Daten des gefangenen Pokémon
         PokemonSpecies species = speciesService.getByPokedexId(request.getPokedexId())
                 .orElseThrow(() -> new NotFoundException("Kein Pokemon mit dieser Pokedex-ID gefunden"));
 
-        // Validierung der Zielbox
+        // Validierung der Ziel-Box
         BoxName targetBox = request.getBox();
         if (targetBox == null) {
             logger.warn("Box wurde nicht angegeben");
             throw new IllegalStateException("Box muss angegeben werden");
         }
 
-        //Prüfung, ob Zielbox voll ist.
+        // Prüfung, ob Ziel-Box voll ist.
         if (boxService.isFull(targetBox, request.getEdition())) {
             String message = (targetBox == BoxName.TEAM)
                     ? "Team ist schon voll (max. 6 Pokemon)"
@@ -99,7 +130,7 @@ public class OwnedPokemonService {
             throw new BoxFullException(message);
         }
 
-        // Erstellt einen neuen Pokemon Eintrag
+        // Erstellt einen neuen Pokémon-Eintrag
         Box box = boxService.getBoxByNameAndEdition(targetBox, request.getEdition());
         OwnedPokemon pokemon = new OwnedPokemon(
                 species,
@@ -113,10 +144,18 @@ public class OwnedPokemonService {
     }
 
     /**
-     * Aktualisiert ein gefangenes Pokemon
-     * @param id Die ID des Pokemon's
-     * @param request Die neuen Daten
-     * @return Das aktualisierte Pokemon
+     * Aktualisiert ein gefangenes Pokémon.
+     * <p>
+     * Alle Felder (Level, Box, Edition, Nickname, Entwicklung) werden geprüft und ggf. aktualisiert.
+     * Spielregeln (z.B. Level nur erhöhen, erlaubte Evolution) werden geprüft.
+     * </p>
+     *
+     * @param id      Die ID des Pokémon
+     * @param request Die neuen Daten (nur geänderte Felder werden übernommen)
+     * @return Das aktualisierte Pokémon
+     * @throws InvalidUpdateException   Wenn Regeln verletzt werden (z.B. Level gesenkt)
+     * @throws NotFoundException        Wenn Pokémon oder neue Species nicht existieren
+     * @throws BoxFullException        Wenn die neue Ziel-Box voll ist
      */
     public OwnedPokemon updatePokemon(Long id, UpdateOwnedDTO request) {
         OwnedPokemon existing = getPokemonById(id);
@@ -177,8 +216,10 @@ public class OwnedPokemonService {
     }
 
     /**
-     * Löscht ein Pokemon anhand dessen ID
-     * @param id Die ID das zu löschenden Pokemon
+     * Löscht ein gefangenes Pokémon anhand seiner ID.
+     *
+     * @param id Die ID des zu löschenden Pokémon
+     * @throws NotFoundException Wenn das Pokémon nicht gefunden wird
      */
     public void deletePokemonById(Long id) {
         logger.info("Lösche Pokemon anhand der ID {}", id);

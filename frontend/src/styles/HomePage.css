@@ -1,0 +1,42 @@
+/* ===========================================================================
+ * HomePage.module.css
+ *
+ * Modularisiertes CSS-Modul für das Styling der Startseite (HomePage).
+ *
+ * Enthält Layout und Design für:
+ * - Grid-Anordnung der Startkarten
+ * - Style der Karten (Farbe, Radius, Hover)
+ * - Icons und Labels innerhalb der Karten
+ *
+ * Wird exklusiv von der HomePage-Komponente verwendet!
+ * ===========================================================================
+ */
+
+.homepage {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--spacing);
+    padding: var(--spacing);
+}
+.homepage__card {
+    background: var(--color-secondary);
+    color: #fff;
+    border-radius: 8px;
+    text-align: center;
+    padding: var(--spacing);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: filter 0.2s;
+}
+.homepage__card:hover {
+    filter: brightness(0.9);
+}
+.homepage__icon {
+    font-size: 2rem;
+}
+.homepage__label {
+    margin-top: var(--spacing);
+    font-weight: bold;
+}
